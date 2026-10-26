@@ -947,20 +947,23 @@ def page_student_data():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Display the data table (read-only)
+        styler = df.style.format({
+            "Before (WPM)": "{:.1f}",
+            "After (WPM)":  "{:.1f}",
+            "Change (WPM)": "{:+.1f}",
+        })
+        styler_method = getattr(styler, "map", getattr(styler, "applymap", None))
+        styled_df = styler_method(
+            lambda v: "color: #0F766E; font-weight: 700"
+            if isinstance(v, (int, float)) and v > 0
+            else ("color: #E11D48; font-weight: 700"
+                  if isinstance(v, (int, float)) and v < 0
+                  else ""),
+            subset=["Change (WPM)"],
+        ) if styler_method else styler
+
         st.dataframe(
-            df.style.format({
-                "Before (WPM)": "{:.1f}",
-                "After (WPM)":  "{:.1f}",
-                "Change (WPM)": "{:+.1f}",
-            }).applymap(
-                lambda v: "color: #10B981; font-weight: 600"
-                if isinstance(v, (int, float)) and v > 0
-                else ("color: #EF4444; font-weight: 600"
-                      if isinstance(v, (int, float)) and v < 0
-                      else ""),
-                subset=["Change (WPM)"],
-            ),
+            styled_df,
             use_container_width=True,
             hide_index=True,
         )
