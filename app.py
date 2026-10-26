@@ -369,6 +369,16 @@ st.markdown(
         color: #FFFFFF !important;
     }
 
+    /* ── Plotly Chart Containers: Clean White Card Appearance ─────────── */
+    .stPlotlyChart, [data-testid="stPlotlyChart"] {
+        background-color: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 12px !important;
+        padding: 4px !important;
+        box-shadow: 0 2px 8px rgba(23, 36, 58, 0.04) !important;
+        margin-bottom: 8px !important;
+    }
+
     /* Hide Streamlit branding */
     #MainMenu, footer { visibility: hidden; }
     </style>
@@ -419,23 +429,34 @@ if "data_source" not in st.session_state:
 # =============================================================================
 
 # ── 6a. Theme Palette (Navy, Blue, Teal, White, Light BG) ────────────────────
-C_NAVY    = "#17243A"   # Navy -- headings, primary text, dark accents
-C_WHITE   = "#FFFFFF"   # White -- cards, chart background
-C_BEFORE  = "#2F80ED"   # Blue -- before-practice values
-C_AFTER   = "#14B8A6"   # Teal -- after-practice values
-C_POS     = "#14B8A6"   # Teal -- positive improvement
-C_NEG     = "#E11D48"   # Red/Crimson -- negative change (got slower)
-C_GRID    = "#E2E8F0"   # Light border grid
-C_TEXT    = "#17243A"   # High-contrast Navy text for all charts & labels
-C_MUTED   = "#475569"   # Muted high-contrast slate
+C_NAVY        = "#17243A"   # Dark Navy -- chart titles, axis titles, primary text
+C_DARK_GREY   = "#334155"   # Slate Grey -- tick labels, data labels, annotations
+C_WHITE       = "#FFFFFF"   # Pure White -- cards, chart & plot backgrounds
+C_LIGHT_BG    = "#F4F7FB"   # Very light blue-grey -- dashboard background
+C_BEFORE      = "#2F80ED"   # Blue -- Before Practice
+C_AFTER       = "#14B8A6"   # Teal -- After Practice
+C_POS         = "#14B8A6"   # Teal -- positive improvement
+C_NEG         = "#E11D48"   # Red/Crimson -- negative change (got slower)
+C_GRID        = "#E2E8F0"   # Light subtle grey gridlines
+C_BORDER      = "#CBD5E1"   # Clean axis lines and borders
+C_TEXT        = "#17243A"   # High-contrast Navy text for headings
+C_MUTED       = "#475569"   # Muted high-contrast slate
 
 # Shared Plotly layout defaults applied to every chart
 CHART_LAYOUT = dict(
-    font=dict(family="Inter, sans-serif", color=C_TEXT, size=12),
+    template="plotly_white",
+    font=dict(family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", color=C_DARK_GREY, size=11),
     plot_bgcolor=C_WHITE,
     paper_bgcolor=C_WHITE,
-    margin=dict(l=45, r=25, t=55, b=45),
-    hoverlabel=dict(bgcolor=C_NAVY, font_size=12, font_family="Inter", font_color="#FFFFFF"),
+    margin=dict(l=55, r=25, t=55, b=50),
+    hoverlabel=dict(
+        bgcolor=C_NAVY,
+        font_size=12,
+        font_family="Inter, sans-serif",
+        font_color="#FFFFFF",
+        bordercolor=C_NAVY,
+    ),
+    autosize=True,
 )
 
 
@@ -515,26 +536,45 @@ def kpi_card(label: str, value: str, unit: str = "", color: str = "") -> str:
 
 
 def apply_chart_defaults(fig: go.Figure, title: str = "") -> go.Figure:
-    """Apply consistent layout defaults to any Plotly figure with high contrast."""
+    """Apply consistent layout defaults to any Plotly figure with high contrast and clean light theme."""
     fig.update_layout(
         **CHART_LAYOUT,
-        title=dict(text=f"<b>{title}</b>", font=dict(size=14, color=C_TEXT)),
+        title=dict(
+            text=f"<b>{title}</b>",
+            font=dict(size=14, color=C_NAVY, family="Inter, sans-serif"),
+            x=0.01,
+            xanchor="left",
+            y=0.96,
+        ),
         legend=dict(
-            font=dict(size=12, color=C_TEXT),
-            title=dict(font=dict(size=12, color=C_TEXT)),
+            bgcolor="rgba(255, 255, 255, 0.95)",
+            bordercolor=C_GRID,
+            borderwidth=1,
+            font=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
         ),
     )
     fig.update_xaxes(
         gridcolor=C_GRID,
-        linecolor="#CBD5E1",
-        tickfont=dict(size=11, color=C_TEXT),
-        title_font=dict(size=12, color=C_TEXT, family="Inter"),
+        gridwidth=1,
+        linecolor=C_BORDER,
+        linewidth=1.2,
+        zeroline=False,
+        tickfont=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
+        title_font=dict(size=12, color=C_NAVY, family="Inter, sans-serif"),
     )
     fig.update_yaxes(
         gridcolor=C_GRID,
-        linecolor="#CBD5E1",
-        tickfont=dict(size=11, color=C_TEXT),
-        title_font=dict(size=12, color=C_TEXT, family="Inter"),
+        gridwidth=1,
+        linecolor=C_BORDER,
+        linewidth=1.2,
+        zeroline=False,
+        tickfont=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
+        title_font=dict(size=12, color=C_NAVY, family="Inter, sans-serif"),
     )
     return fig
 
@@ -620,7 +660,7 @@ def page_overview():
             marker_color=C_BEFORE,
             text=[f"{v:.0f}" for v in results["before"]],
             textposition="outside",
-            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
             hovertemplate="<b>%{x}</b><br>Before Practice: %{y:.1f} WPM<extra></extra>",
         ))
         fig.add_trace(go.Bar(
@@ -630,25 +670,17 @@ def page_overview():
             marker_color=C_AFTER,
             text=[f"{v:.0f}" for v in results["after"]],
             textposition="outside",
-            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
             hovertemplate="<b>%{x}</b><br>After Practice: %{y:.1f} WPM<extra></extra>",
         ))
 
         fig.update_layout(
             barmode="group",
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1,
-                font=dict(size=12, color=C_TEXT, family="Inter"),
-            ),
             yaxis_title="Typing Speed (WPM)",
             xaxis_title="Student ID",
         )
         apply_chart_defaults(fig, "Before vs After Typing Speed -- All Students")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
 
     with right:
         # Significance result card
@@ -1054,7 +1086,7 @@ def page_visualizations():
             marker_color=C_BEFORE,
             text=[f"{v:.0f}" for v in results["before"]],
             textposition="outside",
-            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
             hovertemplate="<b>%{x}</b><br>Before Practice: %{y:.1f} WPM<extra></extra>",
         ))
         fig1.add_trace(go.Bar(
@@ -1064,24 +1096,16 @@ def page_visualizations():
             marker_color=C_AFTER,
             text=[f"{v:.0f}" for v in results["after"]],
             textposition="outside",
-            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
             hovertemplate="<b>%{x}</b><br>After Practice: %{y:.1f} WPM<extra></extra>",
         ))
         fig1.update_layout(
             barmode="group",
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1,
-                font=dict(size=12, color=C_TEXT, family="Inter"),
-            ),
             yaxis_title="Typing Speed (WPM)",
             xaxis_title="Student ID",
         )
         apply_chart_defaults(fig1, "Before & After Typing Speed per Student")
-        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig1, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
         st.caption(
             "Each student has two bars. Blue (#2F80ED) = speed before practice, "
             "Teal (#14B8A6) = speed after practice."
@@ -1101,13 +1125,13 @@ def page_visualizations():
             type="line",
             x0=axis_min, y0=axis_min,
             x1=axis_max, y1=axis_max,
-            line=dict(color="#94A3B8", width=1.8, dash="dash"),
+            line=dict(color="#64748B", width=1.8, dash="dash"),
         )
         fig2.add_annotation(
             x=axis_max - 2, y=axis_max - 4,
             text="No change (y = x)",
             showarrow=False,
-            font=dict(size=11, color=C_TEXT, family="Inter"),
+            font=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
         )
 
         fig2.add_trace(go.Scatter(
@@ -1116,11 +1140,11 @@ def page_visualizations():
             mode="markers+text",
             text=ids,
             textposition="top center",
-            textfont=dict(size=11, color=C_TEXT, family="Inter"),
+            textfont=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
             marker=dict(
                 color=[C_POS if d >= 0 else C_NEG for d in diffs],
-                size=11,
-                line=dict(color="white", width=2),
+                size=12,
+                line=dict(color="#FFFFFF", width=1.8),
             ),
             hovertemplate=(
                 "<b>%{text}</b><br>"
@@ -1138,7 +1162,7 @@ def page_visualizations():
             showlegend=False,
         )
         apply_chart_defaults(fig2, "Before vs After (per Student) -- Scatter Plot")
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
         st.caption(
             "Points above the dashed line improved; below the line means slower after practice. "
             "Teal (#14B8A6) = improved, Red (#E11D48) = declined."
@@ -1157,25 +1181,36 @@ def page_visualizations():
             marker_color=bar_colors,
             text=[f"{d:+.1f}" for d in diffs],
             textposition="outside",
-            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
             hovertemplate=(
                 "<b>%{x}</b><br>"
                 "Improvement: %{y:+.1f} WPM<extra></extra>"
             ),
         ))
 
-        # Horizontal zero line
-        fig3.add_hline(y=0, line_color="#64748B", line_width=1.5)
+        # Horizontal zero baseline
+        fig3.add_hline(y=0, line_color="#94A3B8", line_width=1.5)
+
+        # Dashed mean difference reference line
+        fig3.add_hline(
+            y=float(results["mean_diff"]),
+            line_dash="dash",
+            line_color=C_NAVY,
+            line_width=1.5,
+            annotation_text=f"Mean d_bar = {results['mean_diff']:+.1f} WPM",
+            annotation_position="top left",
+            annotation_font=dict(color=C_NAVY, size=11, family="Inter, sans-serif"),
+        )
 
         fig3.update_layout(
             yaxis_title="WPM Change (After - Before)",
             xaxis_title="Student ID",
         )
         apply_chart_defaults(fig3, "Individual WPM Improvement per Student")
-        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(fig3, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
         st.caption(
             "Positive bars (Teal) = student typed faster after practice. "
-            "Negative bars (Red) = student typed slower."
+            "Negative bars (Red) = student typed slower. Dashed line = mean change."
         )
 
     with col4:
@@ -1202,17 +1237,9 @@ def page_visualizations():
         fig4.update_layout(
             yaxis_title="Typing Speed (WPM)",
             showlegend=True,
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1,
-                font=dict(size=12, color=C_TEXT, family="Inter"),
-            ),
         )
         apply_chart_defaults(fig4, "Speed Distribution -- Before vs After")
-        st.plotly_chart(fig4, use_container_width=True)
+        st.plotly_chart(fig4, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
         st.caption(
             "The box spans the middle 50% of scores (IQR). The line inside is the median. "
             "The dashed line is the mean. Dots outside the whiskers are outliers."
@@ -1429,17 +1456,17 @@ def page_statistical_analysis():
             marker_color=[C_POS if d >= 0 else C_NEG for d in diffs],
             text=[f"{d:+.1f}" for d in diffs],
             textposition="outside",
-            textfont=dict(color=C_TEXT, size=10, family="Inter"),
+            textfont=dict(color=C_DARK_GREY, size=10, family="Inter, sans-serif"),
             hovertemplate="<b>%{x}</b><br>Difference (d): %{y:+.1f} WPM<extra></extra>",
         ))
         fig_mini.add_hline(
             y=float(results["mean_diff"]),
             line_dash="dash",
-            line_color="#17243A",
+            line_color=C_NAVY,
             line_width=1.8,
             annotation_text=f"Mean d_bar = {results['mean_diff']:+.2f}",
             annotation_position="top left",
-            annotation_font=dict(color=C_TEXT, size=11, family="Inter"),
+            annotation_font=dict(color=C_NAVY, size=11, family="Inter, sans-serif"),
         )
         fig_mini.update_layout(
             height=210,
@@ -1448,7 +1475,7 @@ def page_statistical_analysis():
             showlegend=False,
             **{k: v for k, v in CHART_LAYOUT.items() if k not in ("margin",)},
         )
-        st.plotly_chart(fig_mini, use_container_width=True)
+        st.plotly_chart(fig_mini, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
         st.caption("Individual differences (d = after - before). Dashed line = mean difference d_bar.")
 
 
