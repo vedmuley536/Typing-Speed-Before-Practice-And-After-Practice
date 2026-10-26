@@ -90,7 +90,7 @@ st.markdown(
     }
 
     /* Main background #F4F7FB */
-    .stApp {
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
         background-color: #F4F7FB !important;
         color: #17243A !important;
     }
@@ -104,6 +104,12 @@ st.markdown(
 
     p, span, label, div {
         color: #17243A;
+    }
+
+    /* Captions & small notes */
+    .stCaption, [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p, small {
+        color: #334155 !important;
+        font-weight: 500 !important;
     }
 
     /* ── Sidebar: Navy #17243A ────────────────────────────────────────── */
@@ -123,7 +129,7 @@ st.markdown(
         transition: all 0.15s ease-in-out;
     }
     [data-testid="stSidebar"] .stRadio label:hover {
-        background-color: rgba(47, 128, 237, 0.2) !important;
+        background-color: rgba(47, 128, 237, 0.25) !important;
         color: #FFFFFF !important;
     }
     [data-testid="stSidebar"] hr {
@@ -132,11 +138,11 @@ st.markdown(
 
     /* ── Metric / KPI Cards ───────────────────────────────────────────── */
     .kpi-card {
-        background: #FFFFFF;
+        background: #FFFFFF !important;
         border-radius: 12px;
         padding: 22px 24px;
         box-shadow: 0 2px 10px rgba(23, 36, 58, 0.07);
-        border: 1px solid #E2E8F0;
+        border: 1px solid #CBD5E1;
         border-top: 5px solid #17243A;
         margin-bottom: 12px;
         transition: transform 0.15s ease;
@@ -144,28 +150,28 @@ st.markdown(
     .kpi-card:hover {
         transform: translateY(-2px);
     }
-    .kpi-card.blue   { border-top-color: #2F80ED; }
-    .kpi-card.teal   { border-top-color: #14B8A6; }
-    .kpi-card.navy   { border-top-color: #17243A; }
+    .kpi-card.blue   { border-top-color: #2F80ED !important; }
+    .kpi-card.teal   { border-top-color: #14B8A6 !important; }
+    .kpi-card.navy   { border-top-color: #17243A !important; }
 
     .kpi-label {
         font-size: 0.8rem;
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #475569;
+        color: #334155 !important;
         margin-bottom: 8px;
     }
     .kpi-value {
         font-size: 2.2rem;
         font-weight: 800;
-        color: #17243A;
+        color: #17243A !important;
         line-height: 1.1;
     }
     .kpi-unit {
         font-size: 1rem;
         font-weight: 600;
-        color: #64748B;
+        color: #475569 !important;
         margin-left: 5px;
     }
 
@@ -173,14 +179,14 @@ st.markdown(
     .section-header {
         font-size: 1.5rem;
         font-weight: 800;
-        color: #17243A;
+        color: #17243A !important;
         margin-bottom: 4px;
         padding-bottom: 8px;
         border-bottom: 2px solid #CBD5E1;
     }
     .section-sub {
         font-size: 0.92rem;
-        color: #334155;
+        color: #334155 !important;
         margin-bottom: 22px;
         font-weight: 500;
     }
@@ -209,61 +215,143 @@ st.markdown(
         margin-left: 8px;
     }
 
-    /* ── Stat Rows in Analysis Page ───────────────────────────────────── */
+    /* ── Stat Rows in Analysis & Overview Page ────────────────────────── */
     .stat-row {
         display: flex;
         justify-content: space-between;
         padding: 12px 16px;
-        border-bottom: 1px solid #E2E8F0;
+        border: 1px solid #E2E8F0;
         align-items: center;
-        background: #FFFFFF;
+        background: #FFFFFF !important;
         border-radius: 8px;
         margin-bottom: 6px;
         box-shadow: 0 1px 3px rgba(23, 36, 58, 0.04);
     }
-    .stat-name  { font-weight: 600; color: #17243A; font-size: 0.95rem; }
-    .stat-value { font-weight: 800; color: #17243A; font-size: 1.05rem; }
-    .stat-note  { font-size: 0.8rem; color: #475569; margin-top: 3px; font-weight: 400; }
+    .stat-name  { font-weight: 600; color: #17243A !important; font-size: 0.95rem; }
+    .stat-value { font-weight: 800; color: #17243A !important; font-size: 1.05rem; }
+    .stat-note  { font-size: 0.82rem; color: #334155 !important; margin-top: 3px; font-weight: 500; }
 
-    /* ── High-Contrast Box & Card Panels ──────────────────────────────── */
-    .content-box {
-        background: #FFFFFF;
-        border-radius: 12px;
-        padding: 22px 26px;
-        border: 1px solid #CBD5E1;
-        box-shadow: 0 2px 8px rgba(23, 36, 58, 0.05);
-        margin-bottom: 18px;
-    }
-
-    /* ── Plain-English Automatic Interpretation Box ───────────────────── */
+    /* ── Plain-English Automatic Interpretation Box (#F1F5F9) ─────────── */
     .interpretation-card {
-        background: #FFFFFF;
-        border-left: 6px solid #14B8A6;
-        border-radius: 12px;
-        padding: 24px 28px;
-        margin: 18px 0;
-        line-height: 1.75;
-        color: #17243A;
-        border-top: 1px solid #E2E8F0;
-        border-right: 1px solid #E2E8F0;
-        border-bottom: 1px solid #E2E8F0;
-        box-shadow: 0 2px 10px rgba(23, 36, 58, 0.06);
+        background-color: #F1F5F9 !important;
+        border: 1px solid #CBD5E1 !important;
+        border-left: 6px solid #14B8A6 !important;
+        border-radius: 12px !important;
+        padding: 24px 28px !important;
+        margin: 18px 0 !important;
+        line-height: 1.75 !important;
+        color: #334155 !important;
+        box-shadow: 0 2px 10px rgba(23, 36, 58, 0.06) !important;
     }
     .interpretation-card h4 {
         color: #17243A !important;
-        font-size: 1.2rem;
-        font-weight: 800;
-        margin-top: 0;
-        margin-bottom: 12px;
+        font-size: 1.18rem !important;
+        font-weight: 800 !important;
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
     }
     .interpretation-card p {
-        color: #1E293B !important;
-        font-size: 0.98rem;
-        margin-bottom: 12px;
+        color: #334155 !important;
+        font-size: 0.98rem !important;
+        line-height: 1.75 !important;
+        margin-bottom: 14px !important;
     }
     .interpretation-card strong {
         color: #17243A !important;
-        font-weight: 700;
+        font-weight: 700 !important;
+    }
+    .interpretation-card span {
+        color: #334155 !important;
+    }
+
+    /* ── Export & Download Buttons (Navy #17243A with White Text) ─────── */
+    [data-testid="stDownloadButton"] button,
+    div.stDownloadButton > button,
+    div.stDownloadButton button,
+    div.stDownloadButton > button:link,
+    div.stDownloadButton > button:visited,
+    button[data-testid="baseButton-secondary"],
+    button[data-testid="stBaseButton-secondary"] {
+        background-color: #17243A !important;
+        color: #FFFFFF !important;
+        border: 1px solid #17243A !important;
+        border-radius: 8px !important;
+        padding: 10px 22px !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+        transition: all 0.15s ease-in-out !important;
+        box-shadow: 0 2px 6px rgba(23, 36, 58, 0.15) !important;
+    }
+    [data-testid="stDownloadButton"] button:hover,
+    div.stDownloadButton > button:hover,
+    div.stDownloadButton button:hover,
+    button[data-testid="baseButton-secondary"]:hover,
+    button[data-testid="stBaseButton-secondary"]:hover {
+        background-color: #2F80ED !important;
+        color: #FFFFFF !important;
+        border-color: #2F80ED !important;
+        box-shadow: 0 4px 12px rgba(47, 128, 237, 0.28) !important;
+        transform: translateY(-1px) !important;
+    }
+    [data-testid="stDownloadButton"] button:active,
+    div.stDownloadButton > button:active,
+    div.stDownloadButton button:active,
+    button[data-testid="baseButton-secondary"]:active,
+    button[data-testid="stBaseButton-secondary"]:active {
+        background-color: #0F172A !important;
+        color: #FFFFFF !important;
+        transform: translateY(0) !important;
+    }
+    [data-testid="stDownloadButton"] button:focus,
+    div.stDownloadButton > button:focus,
+    div.stDownloadButton button:focus,
+    button[data-testid="baseButton-secondary"]:focus,
+    button[data-testid="stBaseButton-secondary"]:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.35) !important;
+        color: #FFFFFF !important;
+    }
+    /* Ensure label text inside download buttons is always bright white in all states */
+    [data-testid="stDownloadButton"] button *,
+    [data-testid="stDownloadButton"] button p,
+    [data-testid="stDownloadButton"] button span,
+    [data-testid="stDownloadButton"] button div,
+    div.stDownloadButton button *,
+    div.stDownloadButton button p,
+    div.stDownloadButton button span,
+    div.stDownloadButton > button *,
+    div.stDownloadButton > button p,
+    div.stDownloadButton > button span,
+    button[data-testid="baseButton-secondary"] *,
+    button[data-testid="stBaseButton-secondary"] * {
+        color: #FFFFFF !important;
+    }
+    [data-testid="stDownloadButton"] button:hover *,
+    [data-testid="stDownloadButton"] button:hover p,
+    [data-testid="stDownloadButton"] button:hover span,
+    div.stDownloadButton button:hover *,
+    div.stDownloadButton > button:hover * {
+        color: #FFFFFF !important;
+    }
+
+    /* ── Primary Action Buttons (Blue #2F80ED) ────────────────────────── */
+    button[data-testid="baseButton-primary"],
+    button[data-testid="stBaseButton-primary"],
+    .stButton > button[kind="primary"] {
+        background-color: #2F80ED !important;
+        color: #FFFFFF !important;
+        border: 1px solid #2F80ED !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+    }
+    button[data-testid="baseButton-primary"]:hover,
+    button[data-testid="stBaseButton-primary"]:hover {
+        background-color: #1E6AD1 !important;
+        border-color: #1E6AD1 !important;
+    }
+    button[data-testid="baseButton-primary"] *,
+    button[data-testid="stBaseButton-primary"] * {
+        color: #FFFFFF !important;
     }
 
     /* Hide Streamlit branding */
@@ -1295,7 +1383,7 @@ def page_statistical_analysis():
             moe = (results["ci_95_upper"] - results["ci_95_lower"]) / 2.0
             st.markdown(
                 f"""
-                <div style="background:#FFFFFF;border:1px solid #CBD5E1;border-left:5px solid #2F80ED;
+                <div style="background-color:#F1F5F9;border:1px solid #CBD5E1;border-left:5px solid #2F80ED;
                             border-radius:10px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 6px rgba(23,36,58,0.05);">
                     <div style="font-size:0.8rem;font-weight:800;color:#17243A;text-transform:uppercase;letter-spacing:0.07em;">
                         95% Confidence Interval for Mean Improvement
@@ -1303,9 +1391,9 @@ def page_statistical_analysis():
                     <div style="font-size:1.45rem;font-weight:800;color:#2F80ED;margin:8px 0 6px 0;">
                         [{results['ci_95_lower']:.2f}, {results['ci_95_upper']:.2f}] WPM
                     </div>
-                    <div style="font-size:0.88rem;color:#1E293B;line-height:1.6;">
+                    <div style="font-size:0.9rem;color:#334155;line-height:1.6;">
                         Margin of error: &plusmn;{moe:.2f} WPM.<br>
-                        We are 95% confident that the true average improvement across all comparable students is between <strong>{results['ci_95_lower']:.2f}</strong> and <strong>{results['ci_95_upper']:.2f} WPM</strong>.
+                        We are 95% confident that the true average improvement across all comparable students is between <strong style="color:#17243A;">{results['ci_95_lower']:.2f}</strong> and <strong style="color:#17243A;">{results['ci_95_upper']:.2f} WPM</strong>.
                     </div>
                 </div>
                 """,
@@ -1314,10 +1402,10 @@ def page_statistical_analysis():
 
         st.markdown(
             """
-            <div style="color:#17243A;line-height:1.7;font-size:0.92rem;">
-                <p><strong>Why is a paired t-test required?</strong><br>
+            <div style="line-height:1.7;font-size:0.92rem;">
+                <p style="color:#334155;margin-bottom:10px;"><strong style="color:#17243A;">Why is a paired t-test required?</strong><br>
                 Because measurements are taken on the exact same students before and after practice. A paired test analyzes the intra-subject differences (d = after - before), isolating the effect of practice from natural baseline typing ability.</p>
-                <p><strong>How to interpret the p-value:</strong><br>
+                <p style="color:#334155;margin-bottom:10px;"><strong style="color:#17243A;">How to interpret the p-value:</strong><br>
                 The p-value is the probability of observing an improvement at least as large as what we measured purely by chance if practice had no true effect. A p-value below 0.05 provides strong evidence to reject the null hypothesis.</p>
             </div>
             """,
@@ -1541,21 +1629,21 @@ def page_conclusion_export():
     border_accent = "#14B8A6" if sig else "#E11D48"
     st.markdown(
         f"""
-        <div class="interpretation-card" style="border-left-color: {border_accent};">
-            <h4>📈 1. Average Typing Speed Change</h4>
-            <p>{interp['change_text']}</p>
+        <div class="interpretation-card" style="background-color:#F1F5F9;border:1px solid #CBD5E1;border-left:6px solid {border_accent};border-radius:12px;padding:24px 28px;margin:18px 0;box-shadow:0 2px 10px rgba(23,36,58,0.06);color:#334155;">
+            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:0;margin-bottom:10px;">📈 1. Average Typing Speed Change</h4>
+            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['change_text']}</p>
 
-            <h4 style="margin-top:18px;">⚖️ 2. Statistical Significance at &alpha; = {alpha}</h4>
-            <p>{interp['sig_text']}</p>
+            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:18px;margin-bottom:10px;">⚖️ 2. Statistical Significance at &alpha; = {alpha}</h4>
+            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['sig_text']}</p>
 
-            <h4 style="margin-top:18px;">🎲 3. What Does the p-Value Mean in Plain Terms?</h4>
-            <p>{interp['p_meaning']}</p>
+            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:18px;margin-bottom:10px;">🎲 3. What Does the p-Value Mean in Plain Terms?</h4>
+            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['p_meaning']}</p>
 
-            <h4 style="margin-top:18px;">🛡️ 4. Null Hypothesis Decision</h4>
-            <p>{interp['h0_text']}</p>
+            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:18px;margin-bottom:10px;">🛡️ 4. Null Hypothesis Decision</h4>
+            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['h0_text']}</p>
 
-            <h4 style="margin-top:18px;">🎯 5. 95% Confidence Interval & Population Impact</h4>
-            <p>{interp['ci_text']}</p>
+            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:18px;margin-bottom:10px;">🎯 5. 95% Confidence Interval & Population Impact</h4>
+            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['ci_text']}</p>
         </div>
         """,
         unsafe_allow_html=True,

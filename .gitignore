@@ -12,8 +12,8 @@ __pycache__/
 *.so
 .pytest_cache/
 
-# Streamlit logs and cache
-.streamlit/
+# Streamlit secrets and runtime data
+.streamlit/secrets.toml
 
 # OS generated files
 Thumbs.db
