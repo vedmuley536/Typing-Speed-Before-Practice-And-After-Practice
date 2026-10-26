@@ -369,14 +369,42 @@ st.markdown(
         color: #FFFFFF !important;
     }
 
-    /* ── Plotly Chart Containers: Clean White Card Appearance ─────────── */
-    .stPlotlyChart, [data-testid="stPlotlyChart"] {
+    /* ── Independent Chart Card Containers (st.container border=True) ── */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 12px !important;
+        padding: 14px 14px 10px 14px !important;
+        box-shadow: 0 2px 8px rgba(23, 36, 58, 0.04) !important;
+        margin-bottom: 16px !important;
+    }
+
+    /* Plotly chart container: stable, clean, no conflicting padding or transforms */
+    [data-testid="stPlotlyChart"], .stPlotlyChart {
         background-color: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
-        border-radius: 12px !important;
-        padding: 4px !important;
-        box-shadow: 0 2px 8px rgba(23, 36, 58, 0.04) !important;
-        margin-bottom: 8px !important;
+        border-radius: 10px !important;
+        padding: 0 !important;
+        margin: 0 0 6px 0 !important;
+        box-shadow: 0 1px 4px rgba(23, 36, 58, 0.03) !important;
+        width: 100% !important;
+    }
+
+    /* When inside an independent card container, avoid nested borders */
+    [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stPlotlyChart"],
+    [data-testid="stVerticalBlockBorderWrapper"] .stPlotlyChart {
+        border: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Captions inside chart containers have clean spacing and high contrast */
+    [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stCaptionContainer"] {
+        padding-top: 8px !important;
+        border-top: 1px solid #F1F5F9 !important;
+        margin-top: 4px !important;
     }
 
     /* Hide Streamlit branding */
@@ -442,13 +470,16 @@ C_BORDER      = "#CBD5E1"   # Clean axis lines and borders
 C_TEXT        = "#17243A"   # High-contrast Navy text for headings
 C_MUTED       = "#475569"   # Muted high-contrast slate
 
+CHART_HEIGHT  = 420         # Fixed, stable height to prevent vertical layout shifts, overlapping, and page jumping
+
 # Shared Plotly layout defaults applied to every chart
 CHART_LAYOUT = dict(
     template="plotly_white",
     font=dict(family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", color=C_DARK_GREY, size=11),
     plot_bgcolor=C_WHITE,
     paper_bgcolor=C_WHITE,
-    margin=dict(l=55, r=25, t=55, b=50),
+    height=CHART_HEIGHT,
+    margin=dict(l=55, r=25, t=60, b=50),
     hoverlabel=dict(
         bgcolor=C_NAVY,
         font_size=12,
@@ -456,7 +487,6 @@ CHART_LAYOUT = dict(
         font_color="#FFFFFF",
         bordercolor=C_NAVY,
     ),
-    autosize=True,
 )
 
 
@@ -1073,177 +1103,205 @@ def page_visualizations():
     names  = [r.get("name", sid) for r, sid in zip(st.session_state.records, ids)]
     hover  = [f"{n} ({sid})" for n, sid in zip(names, ids)]
 
-    # ── Chart 1 & 2 (top row) ─────────────────────────────────────────────────
+    # ── Row 1: Charts 1 & 2 (top row) ─────────────────────────────────────────
     col1, col2 = st.columns(2)
 
     with col1:
-        # --- Chart 1: Grouped Bar -- individual student before vs after ---
-        fig1 = go.Figure()
-        fig1.add_trace(go.Bar(
-            name="Before Practice",
-            x=ids,
-            y=before.tolist(),
-            marker_color=C_BEFORE,
-            text=[f"{v:.0f}" for v in results["before"]],
-            textposition="outside",
-            textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
-            hovertemplate="<b>%{x}</b><br>Before Practice: %{y:.1f} WPM<extra></extra>",
-        ))
-        fig1.add_trace(go.Bar(
-            name="After Practice",
-            x=ids,
-            y=after.tolist(),
-            marker_color=C_AFTER,
-            text=[f"{v:.0f}" for v in results["after"]],
-            textposition="outside",
-            textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
-            hovertemplate="<b>%{x}</b><br>After Practice: %{y:.1f} WPM<extra></extra>",
-        ))
-        fig1.update_layout(
-            barmode="group",
-            yaxis_title="Typing Speed (WPM)",
-            xaxis_title="Student ID",
-        )
-        apply_chart_defaults(fig1, "Before & After Typing Speed per Student")
-        st.plotly_chart(fig1, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
-        st.caption(
-            "Each student has two bars. Blue (#2F80ED) = speed before practice, "
-            "Teal (#14B8A6) = speed after practice."
-        )
+        with st.container(border=True):
+            # --- Chart 1: Grouped Bar -- individual student before vs after ---
+            fig1 = go.Figure()
+            fig1.add_trace(go.Bar(
+                name="Before Practice",
+                x=ids,
+                y=before.tolist(),
+                marker_color=C_BEFORE,
+                text=[f"{v:.0f}" for v in results["before"]],
+                textposition="outside",
+                textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
+                hovertemplate="<b>%{x}</b><br>Before Practice: %{y:.1f} WPM<extra></extra>",
+            ))
+            fig1.add_trace(go.Bar(
+                name="After Practice",
+                x=ids,
+                y=after.tolist(),
+                marker_color=C_AFTER,
+                text=[f"{v:.0f}" for v in results["after"]],
+                textposition="outside",
+                textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
+                hovertemplate="<b>%{x}</b><br>After Practice: %{y:.1f} WPM<extra></extra>",
+            ))
+            fig1.update_layout(
+                barmode="group",
+                yaxis_title="Typing Speed (WPM)",
+                xaxis_title="Student ID",
+            )
+            apply_chart_defaults(fig1, "Before & After Typing Speed per Student")
+            st.plotly_chart(
+                fig1,
+                use_container_width=True,
+                theme=None,
+                key="chart_grouped_bar",
+                config={"responsive": True, "displayModeBar": False},
+            )
+            st.caption(
+                "Each student has two bars. Blue (#2F80ED) = speed before practice, "
+                "Teal (#14B8A6) = speed after practice."
+            )
 
     with col2:
-        # --- Chart 2: Scatter -- before (x) vs after (y) with y=x reference ---
-        # The diagonal line represents "no change" (after = before).
-        # Points above the line improved; points below declined.
-        axis_min = min(before.min(), after.min()) - 5
-        axis_max = max(before.max(), after.max()) + 5
+        with st.container(border=True):
+            # --- Chart 2: Scatter -- before (x) vs after (y) with y=x reference ---
+            # The diagonal line represents "no change" (after = before).
+            # Points above the line improved; points below declined.
+            axis_min = min(before.min(), after.min()) - 5
+            axis_max = max(before.max(), after.max()) + 5
 
-        fig2 = go.Figure()
+            fig2 = go.Figure()
 
-        # Reference line y = x (no change baseline)
-        fig2.add_shape(
-            type="line",
-            x0=axis_min, y0=axis_min,
-            x1=axis_max, y1=axis_max,
-            line=dict(color="#64748B", width=1.8, dash="dash"),
-        )
-        fig2.add_annotation(
-            x=axis_max - 2, y=axis_max - 4,
-            text="No change (y = x)",
-            showarrow=False,
-            font=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
-        )
+            # Reference line y = x (no change baseline)
+            fig2.add_shape(
+                type="line",
+                x0=axis_min, y0=axis_min,
+                x1=axis_max, y1=axis_max,
+                line=dict(color="#64748B", width=1.8, dash="dash"),
+            )
+            fig2.add_annotation(
+                x=axis_max - 2, y=axis_max - 4,
+                text="No change (y = x)",
+                showarrow=False,
+                font=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
+            )
 
-        fig2.add_trace(go.Scatter(
-            x=before.tolist(),
-            y=after.tolist(),
-            mode="markers+text",
-            text=ids,
-            textposition="top center",
-            textfont=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
-            marker=dict(
-                color=[C_POS if d >= 0 else C_NEG for d in diffs],
-                size=12,
-                line=dict(color="#FFFFFF", width=1.8),
-            ),
-            hovertemplate=(
-                "<b>%{text}</b><br>"
-                "Before: %{x:.1f} WPM<br>"
-                "After: %{y:.1f} WPM<br>"
-                "Change: %{customdata:+.1f} WPM<extra></extra>"
-            ),
-            customdata=diffs.tolist(),
-            name="Students",
-        ))
+            fig2.add_trace(go.Scatter(
+                x=before.tolist(),
+                y=after.tolist(),
+                mode="markers+text",
+                text=ids,
+                textposition="top center",
+                textfont=dict(size=11, color=C_DARK_GREY, family="Inter, sans-serif"),
+                marker=dict(
+                    color=[C_POS if d >= 0 else C_NEG for d in diffs],
+                    size=12,
+                    line=dict(color="#FFFFFF", width=1.8),
+                ),
+                hovertemplate=(
+                    "<b>%{text}</b><br>"
+                    "Before: %{x:.1f} WPM<br>"
+                    "After: %{y:.1f} WPM<br>"
+                    "Change: %{customdata:+.1f} WPM<extra></extra>"
+                ),
+                customdata=diffs.tolist(),
+                name="Students",
+            ))
 
-        fig2.update_layout(
-            xaxis=dict(title="Before Practice (WPM)", range=[axis_min, axis_max]),
-            yaxis=dict(title="After Practice (WPM)",  range=[axis_min, axis_max]),
-            showlegend=False,
-        )
-        apply_chart_defaults(fig2, "Before vs After (per Student) -- Scatter Plot")
-        st.plotly_chart(fig2, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
-        st.caption(
-            "Points above the dashed line improved; below the line means slower after practice. "
-            "Teal (#14B8A6) = improved, Red (#E11D48) = declined."
-        )
+            fig2.update_layout(
+                xaxis=dict(title="Before Practice (WPM)", range=[axis_min, axis_max]),
+                yaxis=dict(title="After Practice (WPM)",  range=[axis_min, axis_max]),
+                showlegend=False,
+            )
+            apply_chart_defaults(fig2, "Before vs After (per Student) -- Scatter Plot")
+            st.plotly_chart(
+                fig2,
+                use_container_width=True,
+                theme=None,
+                key="chart_scatter",
+                config={"responsive": True, "displayModeBar": False},
+            )
+            st.caption(
+                "Points above the dashed line improved; below the line means slower after practice. "
+                "Teal (#14B8A6) = improved, Red (#E11D48) = declined."
+            )
 
-    # ── Chart 3 & 4 (bottom row) ──────────────────────────────────────────────
+    # ── Row 2: Charts 3 & 4 (bottom row) ──────────────────────────────────────
     col3, col4 = st.columns(2)
 
     with col3:
-        # --- Chart 3: Improvement bar -- (after - before) per student ---
-        bar_colors = [C_POS if d >= 0 else C_NEG for d in diffs]
+        with st.container(border=True):
+            # --- Chart 3: Improvement bar -- (after - before) per student ---
+            bar_colors = [C_POS if d >= 0 else C_NEG for d in diffs]
 
-        fig3 = go.Figure(go.Bar(
-            x=ids,
-            y=diffs.tolist(),
-            marker_color=bar_colors,
-            text=[f"{d:+.1f}" for d in diffs],
-            textposition="outside",
-            textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
-            hovertemplate=(
-                "<b>%{x}</b><br>"
-                "Improvement: %{y:+.1f} WPM<extra></extra>"
-            ),
-        ))
+            fig3 = go.Figure(go.Bar(
+                x=ids,
+                y=diffs.tolist(),
+                marker_color=bar_colors,
+                text=[f"{d:+.1f}" for d in diffs],
+                textposition="outside",
+                textfont=dict(color=C_DARK_GREY, size=11, family="Inter, sans-serif"),
+                hovertemplate=(
+                    "<b>%{x}</b><br>"
+                    "Improvement: %{y:+.1f} WPM<extra></extra>"
+                ),
+            ))
 
-        # Horizontal zero baseline
-        fig3.add_hline(y=0, line_color="#94A3B8", line_width=1.5)
+            # Horizontal zero baseline
+            fig3.add_hline(y=0, line_color="#94A3B8", line_width=1.5)
 
-        # Dashed mean difference reference line
-        fig3.add_hline(
-            y=float(results["mean_diff"]),
-            line_dash="dash",
-            line_color=C_NAVY,
-            line_width=1.5,
-            annotation_text=f"Mean d_bar = {results['mean_diff']:+.1f} WPM",
-            annotation_position="top left",
-            annotation_font=dict(color=C_NAVY, size=11, family="Inter, sans-serif"),
-        )
+            # Dashed mean difference reference line
+            fig3.add_hline(
+                y=float(results["mean_diff"]),
+                line_dash="dash",
+                line_color=C_NAVY,
+                line_width=1.5,
+                annotation_text=f"Mean d_bar = {results['mean_diff']:+.1f} WPM",
+                annotation_position="top left",
+                annotation_font=dict(color=C_NAVY, size=11, family="Inter, sans-serif"),
+            )
 
-        fig3.update_layout(
-            yaxis_title="WPM Change (After - Before)",
-            xaxis_title="Student ID",
-        )
-        apply_chart_defaults(fig3, "Individual WPM Improvement per Student")
-        st.plotly_chart(fig3, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
-        st.caption(
-            "Positive bars (Teal) = student typed faster after practice. "
-            "Negative bars (Red) = student typed slower. Dashed line = mean change."
-        )
+            fig3.update_layout(
+                yaxis_title="WPM Change (After - Before)",
+                xaxis_title="Student ID",
+            )
+            apply_chart_defaults(fig3, "Individual WPM Improvement per Student")
+            st.plotly_chart(
+                fig3,
+                use_container_width=True,
+                theme=None,
+                key="chart_improvement",
+                config={"responsive": True, "displayModeBar": False},
+            )
+            st.caption(
+                "Positive bars (Teal) = student typed faster after practice. "
+                "Negative bars (Red) = student typed slower. Dashed line = mean change."
+            )
 
     with col4:
-        # --- Chart 4: Box plots -- distribution of before & after speeds ---
-        # A box plot shows the median (middle line), the interquartile range
-        # (the box itself), and outliers (individual dots).
-        fig4 = go.Figure()
+        with st.container(border=True):
+            # --- Chart 4: Box plots -- distribution of before & after speeds ---
+            # A box plot shows the median (middle line), the interquartile range
+            # (the box itself), and outliers (individual dots).
+            fig4 = go.Figure()
 
-        fig4.add_trace(go.Box(
-            y=before.tolist(),
-            name="Before Practice",
-            marker_color=C_BEFORE,
-            boxmean=True,           # Show mean as a dashed line inside the box
-            hovertemplate="Before WPM<br>%{y:.1f}<extra></extra>",
-        ))
-        fig4.add_trace(go.Box(
-            y=after.tolist(),
-            name="After Practice",
-            marker_color=C_AFTER,
-            boxmean=True,
-            hovertemplate="After WPM<br>%{y:.1f}<extra></extra>",
-        ))
+            fig4.add_trace(go.Box(
+                y=before.tolist(),
+                name="Before Practice",
+                marker_color=C_BEFORE,
+                boxmean=True,           # Show mean as a dashed line inside the box
+                hovertemplate="Before WPM<br>%{y:.1f}<extra></extra>",
+            ))
+            fig4.add_trace(go.Box(
+                y=after.tolist(),
+                name="After Practice",
+                marker_color=C_AFTER,
+                boxmean=True,
+                hovertemplate="After WPM<br>%{y:.1f}<extra></extra>",
+            ))
 
-        fig4.update_layout(
-            yaxis_title="Typing Speed (WPM)",
-            showlegend=True,
-        )
-        apply_chart_defaults(fig4, "Speed Distribution -- Before vs After")
-        st.plotly_chart(fig4, use_container_width=True, theme=None, config={"responsive": True, "displayModeBar": False})
-        st.caption(
-            "The box spans the middle 50% of scores (IQR). The line inside is the median. "
-            "The dashed line is the mean. Dots outside the whiskers are outliers."
-        )
+            fig4.update_layout(
+                yaxis_title="Typing Speed (WPM)",
+                showlegend=True,
+            )
+            apply_chart_defaults(fig4, "Speed Distribution -- Before vs After")
+            st.plotly_chart(
+                fig4,
+                use_container_width=True,
+                theme=None,
+                key="chart_distribution",
+                config={"responsive": True, "displayModeBar": False},
+            )
+            st.caption(
+                "The box spans the middle 50% of scores (IQR). The line inside is the median. "
+                "The dashed line is the mean. Dots outside the whiskers are outliers."
+            )
 
 
 # =============================================================================
@@ -1420,6 +1478,7 @@ def page_statistical_analysis():
         st.markdown("<h4 style='color:#17243A;'>🎯 Confidence Interval & Interpretation</h4>", unsafe_allow_html=True)
 
         if results.get("ci_95_lower") is not None and results.get("ci_95_upper") is not None:
+            moe = results["ci_95_upper"] - results["mean_diff"]
             ci_card_html = (
                 f'<div style="background-color:#F1F5F9;border:1px solid #CBD5E1;border-left:5px solid #2F80ED;'
                 f'border-radius:10px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 6px rgba(23,36,58,0.05);">'
