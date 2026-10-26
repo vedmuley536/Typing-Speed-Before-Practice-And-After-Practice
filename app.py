@@ -242,19 +242,34 @@ st.markdown(
         line-height: 1.75 !important;
         color: #334155 !important;
         box-shadow: 0 2px 10px rgba(23, 36, 58, 0.06) !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
     }
     .interpretation-card h4 {
         color: #17243A !important;
-        font-size: 1.18rem !important;
+        font-size: 1.15rem !important;
         font-weight: 800 !important;
+        margin-top: 20px !important;
+        margin-bottom: 8px !important;
+        line-height: 1.4 !important;
+    }
+    .interpretation-card h4:first-child {
         margin-top: 0 !important;
-        margin-bottom: 10px !important;
     }
     .interpretation-card p {
         color: #334155 !important;
         font-size: 0.98rem !important;
         line-height: 1.75 !important;
-        margin-bottom: 14px !important;
+        margin-bottom: 16px !important;
+        margin-top: 0 !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
+    }
+    .interpretation-card p:last-child {
+        margin-bottom: 0 !important;
     }
     .interpretation-card strong {
         color: #17243A !important;
@@ -652,24 +667,19 @@ def page_overview():
             card_bg = "#F1F5F9"
             border_col = "#94A3B8"
 
-        st.markdown(
-            f"""
-            <div style="background:{card_bg};border:1px solid #CBD5E1;border-left:5px solid {border_col};
-                        border-radius:10px;padding:20px;box-shadow:0 2px 8px rgba(23,36,58,0.06);margin-top:6px;">
-                <div style="font-size:0.78rem;font-weight:800;color:#17243A;
-                            text-transform:uppercase;letter-spacing:0.08em;">
-                    Hypothesis Test Outcome
-                </div>
-                <div style="font-size:1.15rem;margin:10px 0 12px 0;">{verdict}</div>
-                <div style="font-size:0.9rem;color:#17243A;line-height:1.8;font-weight:500;">
-                    <strong>p-value:</strong> {p_str}<br>
-                    <strong>Significance level (&alpha;):</strong> {alpha}<br>
-                    <strong>Degrees of freedom (df):</strong> {results['df']}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
+        outcome_html = (
+            f'<div style="background:{card_bg};border:1px solid #CBD5E1;border-left:5px solid {border_col};'
+            f'border-radius:10px;padding:20px;box-shadow:0 2px 8px rgba(23,36,58,0.06);margin-top:6px;">'
+            f'<div style="font-size:0.78rem;font-weight:800;color:#17243A;'
+            f'text-transform:uppercase;letter-spacing:0.08em;">Hypothesis Test Outcome</div>'
+            f'<div style="font-size:1.15rem;margin:10px 0 12px 0;">{verdict}</div>'
+            f'<div style="font-size:0.9rem;color:#17243A;line-height:1.8;font-weight:500;">'
+            f'<strong>p-value:</strong> {p_str}<br>'
+            f'<strong>Significance level (&alpha;):</strong> {alpha}<br>'
+            f'<strong>Degrees of freedom (df):</strong> {results["df"]}'
+            f'</div></div>'
         )
+        st.markdown(outcome_html, unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1380,37 +1390,31 @@ def page_statistical_analysis():
         st.markdown("<h4 style='color:#17243A;'>🎯 Confidence Interval & Interpretation</h4>", unsafe_allow_html=True)
 
         if results.get("ci_95_lower") is not None and results.get("ci_95_upper") is not None:
-            moe = (results["ci_95_upper"] - results["ci_95_lower"]) / 2.0
-            st.markdown(
-                f"""
-                <div style="background-color:#F1F5F9;border:1px solid #CBD5E1;border-left:5px solid #2F80ED;
-                            border-radius:10px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 6px rgba(23,36,58,0.05);">
-                    <div style="font-size:0.8rem;font-weight:800;color:#17243A;text-transform:uppercase;letter-spacing:0.07em;">
-                        95% Confidence Interval for Mean Improvement
-                    </div>
-                    <div style="font-size:1.45rem;font-weight:800;color:#2F80ED;margin:8px 0 6px 0;">
-                        [{results['ci_95_lower']:.2f}, {results['ci_95_upper']:.2f}] WPM
-                    </div>
-                    <div style="font-size:0.9rem;color:#334155;line-height:1.6;">
-                        Margin of error: &plusmn;{moe:.2f} WPM.<br>
-                        We are 95% confident that the true average improvement across all comparable students is between <strong style="color:#17243A;">{results['ci_95_lower']:.2f}</strong> and <strong style="color:#17243A;">{results['ci_95_upper']:.2f} WPM</strong>.
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
+            ci_card_html = (
+                f'<div style="background-color:#F1F5F9;border:1px solid #CBD5E1;border-left:5px solid #2F80ED;'
+                f'border-radius:10px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 6px rgba(23,36,58,0.05);">'
+                f'<div style="font-size:0.8rem;font-weight:800;color:#17243A;text-transform:uppercase;letter-spacing:0.07em;">'
+                f'95% Confidence Interval for Mean Improvement</div>'
+                f'<div style="font-size:1.45rem;font-weight:800;color:#2F80ED;margin:8px 0 6px 0;">'
+                f'[{results["ci_95_lower"]:.2f}, {results["ci_95_upper"]:.2f}] WPM</div>'
+                f'<div style="font-size:0.9rem;color:#334155;line-height:1.6;">'
+                f'Margin of error: &plusmn;{moe:.2f} WPM.<br>'
+                f'We are 95% confident that the true average improvement across all comparable students is between '
+                f'<strong style="color:#17243A;">{results["ci_95_lower"]:.2f}</strong> and '
+                f'<strong style="color:#17243A;">{results["ci_95_upper"]:.2f} WPM</strong>.</div>'
+                f'</div>'
             )
+            st.markdown(ci_card_html, unsafe_allow_html=True)
 
-        st.markdown(
-            """
-            <div style="line-height:1.7;font-size:0.92rem;">
-                <p style="color:#334155;margin-bottom:10px;"><strong style="color:#17243A;">Why is a paired t-test required?</strong><br>
-                Because measurements are taken on the exact same students before and after practice. A paired test analyzes the intra-subject differences (d = after - before), isolating the effect of practice from natural baseline typing ability.</p>
-                <p style="color:#334155;margin-bottom:10px;"><strong style="color:#17243A;">How to interpret the p-value:</strong><br>
-                The p-value is the probability of observing an improvement at least as large as what we measured purely by chance if practice had no true effect. A p-value below 0.05 provides strong evidence to reject the null hypothesis.</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
+        exp_html = (
+            f'<div style="line-height:1.7;font-size:0.92rem;">'
+            f'<p style="color:#334155;margin:0 0 10px 0;"><strong style="color:#17243A;">Why is a paired t-test required?</strong><br>'
+            f'Because measurements are taken on the exact same students before and after practice. A paired test analyzes the intra-subject differences (d = after - before), isolating the effect of practice from natural baseline typing ability.</p>'
+            f'<p style="color:#334155;margin:0 0 10px 0;"><strong style="color:#17243A;">How to interpret the p-value:</strong><br>'
+            f'The p-value is the probability of observing an improvement at least as large as what we measured purely by chance if practice had no true effect. A p-value below 0.05 provides strong evidence to reject the null hypothesis.</p>'
+            f'</div>'
         )
+        st.markdown(exp_html, unsafe_allow_html=True)
 
         # Show the student-level differences as a mini chart with high contrast
         diffs = results["differences"]
@@ -1627,27 +1631,34 @@ def page_conclusion_export():
     )
 
     border_accent = "#14B8A6" if sig else "#E11D48"
-    st.markdown(
-        f"""
-        <div class="interpretation-card" style="background-color:#F1F5F9;border:1px solid #CBD5E1;border-left:6px solid {border_accent};border-radius:12px;padding:24px 28px;margin:18px 0;box-shadow:0 2px 10px rgba(23,36,58,0.06);color:#334155;">
-            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:0;margin-bottom:10px;">📈 1. Average Typing Speed Change</h4>
-            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['change_text']}</p>
-
-            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:18px;margin-bottom:10px;">⚖️ 2. Statistical Significance at &alpha; = {alpha}</h4>
-            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['sig_text']}</p>
-
-            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:18px;margin-bottom:10px;">🎲 3. What Does the p-Value Mean in Plain Terms?</h4>
-            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['p_meaning']}</p>
-
-            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:18px;margin-bottom:10px;">🛡️ 4. Null Hypothesis Decision</h4>
-            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['h0_text']}</p>
-
-            <h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin-top:18px;margin-bottom:10px;">🎯 5. 95% Confidence Interval & Population Impact</h4>
-            <p style="color:#334155;font-size:0.98rem;line-height:1.75;margin-bottom:14px;">{interp['ci_text']}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    interpretation_html = (
+        f'<div class="interpretation-card" style="background-color:#F1F5F9;border:1px solid #CBD5E1;'
+        f'border-left:6px solid {border_accent};border-radius:12px;padding:24px 28px;margin:18px 0;'
+        f'box-shadow:0 2px 10px rgba(23,36,58,0.06);color:#334155;box-sizing:border-box;width:100%;'
+        f'overflow-wrap:break-word;word-break:normal;">'
+        f'<h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin:0 0 8px 0;line-height:1.4;">'
+        f'📈 1. Average Typing Speed Change</h4>'
+        f'<p style="color:#334155;font-size:0.98rem;line-height:1.75;margin:0 0 18px 0;">'
+        f'{interp["change_text"]}</p>'
+        f'<h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin:0 0 8px 0;line-height:1.4;">'
+        f'⚖️ 2. Statistical Significance</h4>'
+        f'<p style="color:#334155;font-size:0.98rem;line-height:1.75;margin:0 0 18px 0;">'
+        f'{interp["sig_text"]}</p>'
+        f'<h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin:0 0 8px 0;line-height:1.4;">'
+        f'🎲 3. What the P-value Means</h4>'
+        f'<p style="color:#334155;font-size:0.98rem;line-height:1.75;margin:0 0 18px 0;">'
+        f'{interp["p_meaning"]}</p>'
+        f'<h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin:0 0 8px 0;line-height:1.4;">'
+        f'🛡️ 4. Null Hypothesis Decision</h4>'
+        f'<p style="color:#334155;font-size:0.98rem;line-height:1.75;margin:0 0 18px 0;">'
+        f'{interp["h0_text"]}</p>'
+        f'<h4 style="color:#17243A;font-size:1.15rem;font-weight:800;margin:0 0 8px 0;line-height:1.4;">'
+        f'🎯 5. 95% Confidence Interval</h4>'
+        f'<p style="color:#334155;font-size:0.98rem;line-height:1.75;margin:0;">'
+        f'{interp["ci_text"]}</p>'
+        f'</div>'
     )
+    st.markdown(interpretation_html, unsafe_allow_html=True)
 
     # ── Export: full data CSV & Summary TXT ─────────────────────────────────────
     st.markdown("---")
