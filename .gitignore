@@ -1,0 +1,29 @@
+# Virtual Environments
+.venv/
+.venv-*/
+venv/
+ENV/
+env/
+
+# Python cache and temporary files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Streamlit logs and cache
+.streamlit/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Temporary scratch logs and archives
+*.log
+*.zip
+create_backup.py
+data/nonascii_report.txt
