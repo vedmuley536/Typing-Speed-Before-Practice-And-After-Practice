@@ -366,6 +366,7 @@ def run_paired_ttest(
     n = len(differences)
     mean_diff = float(np.mean(differences))
     std_diff  = compute_sample_std(differences, label="differences")
+    standard_error = std_diff / math.sqrt(n) if n > 0 else 0.0
 
     # -- 4a. Guard: zero-variance differences ---------------------------------
     # If EVERY student improved by exactly the same amount, std_diff = 0.
@@ -398,12 +399,16 @@ def run_paired_ttest(
             "p_value":            None,
             "mean_diff":          mean_diff,
             "std_diff":           std_diff,
+            "standard_error":     0.0,
+            "ci_95_lower":        mean_diff,
+            "ci_95_upper":        mean_diff,
+            "t_crit":             None,
             "significant":        False,
             "conclusion":         conclusion,
             "alpha":              alpha,
         }
 
-    # -- 4b. Run the paired t-test --------------------------------------------
+    # -- 4b. Run the paired t-test & 95% Confidence Interval ------------------
     # scipy.stats.ttest_rel does EXACTLY the paired t-test formula above.
     # It takes the raw before/after arrays, computes differences internally,
     # and returns the t-statistic and two-tailed p-value.
@@ -412,6 +417,13 @@ def run_paired_ttest(
     t_stat  = float(result.statistic)
     p_value = float(result.pvalue)
     df      = n - 1                     # degrees of freedom
+
+    # 95% Confidence Interval for the mean difference:
+    # CI = mean_diff +/- (t_crit * standard_error)
+    t_crit = float(stats.t.ppf(1.0 - alpha / 2.0, df))
+    margin_of_error = t_crit * standard_error
+    ci_95_lower = mean_diff - margin_of_error
+    ci_95_upper = mean_diff + margin_of_error
 
     # -- 4c. Decision and plain-English conclusion ----------------------------
     significant = p_value < alpha
@@ -440,6 +452,10 @@ def run_paired_ttest(
         "p_value":            p_value,
         "mean_diff":          mean_diff,
         "std_diff":           std_diff,
+        "standard_error":     standard_error,
+        "ci_95_lower":        ci_95_lower,
+        "ci_95_upper":        ci_95_upper,
+        "t_crit":             t_crit,
         "significant":        significant,
         "conclusion":         conclusion,
         "alpha":              alpha,
@@ -511,14 +527,18 @@ def analyse(records: list, alpha: float = 0.05) -> dict:
         "std_after":   std_after,
 
         # Difference statistics + t-test results
-        "mean_diff":   ttest["mean_diff"],
-        "std_diff":    ttest["std_diff"],
-        "t_statistic": ttest["t_statistic"],
-        "df":          ttest["degrees_of_freedom"],
-        "p_value":     ttest["p_value"],
-        "significant": ttest["significant"],
-        "conclusion":  ttest["conclusion"],
-        "alpha":       alpha,
+        "mean_diff":      ttest["mean_diff"],
+        "std_diff":       ttest["std_diff"],
+        "standard_error": ttest["standard_error"],
+        "ci_95_lower":    ttest["ci_95_lower"],
+        "ci_95_upper":    ttest["ci_95_upper"],
+        "t_crit":         ttest["t_crit"],
+        "t_statistic":    ttest["t_statistic"],
+        "df":             ttest["degrees_of_freedom"],
+        "p_value":        ttest["p_value"],
+        "significant":    ttest["significant"],
+        "conclusion":     ttest["conclusion"],
+        "alpha":          alpha,
     }
 
 
@@ -748,7 +768,22 @@ def run_tests() -> None:
     ), "Expected zero-variance conclusion to mention consistency"
     print("  PASS Test 13: zero-variance differences handled gracefully")
 
-    print("\nAll 13 tests passed!\n")
+    # -- Test 14: Standard error & 95% Confidence Interval ---------------------
+    # For n=5, df=4: t_crit(0.975, 4) ~= 2.776445. SE = 4.472136 / sqrt(5) = 2.0
+    # Margin of error = 2.776445 * 2.0 = 5.55289
+    # 95% CI = [8.0 - 5.55289, 8.0 + 5.55289] = [2.4471, 13.5529]
+    assert _approx_equal(results["standard_error"], 2.0, tol=1e-4), (
+        f"Expected SE=2.0, got {results['standard_error']}"
+    )
+    assert _approx_equal(results["ci_95_lower"], 8.0 - 2.776445 * 2.0, tol=1e-3), (
+        f"Expected CI lower ~= 2.4471, got {results['ci_95_lower']}"
+    )
+    assert _approx_equal(results["ci_95_upper"], 8.0 + 2.776445 * 2.0, tol=1e-3), (
+        f"Expected CI upper ~= 13.5529, got {results['ci_95_upper']}"
+    )
+    print(f"  PASS Test 14: SE = {results['standard_error']:.2f}, 95% CI = [{results['ci_95_lower']:.2f}, {results['ci_95_upper']:.2f}]")
+
+    print("\nAll 14 tests passed!\n")
 
 
 # =============================================================================

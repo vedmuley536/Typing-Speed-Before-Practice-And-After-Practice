@@ -82,120 +82,188 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* ── Global font & background ─────────────────────────────────────── */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    /* ── Global Font & Background ─────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
     }
 
-    /* Sidebar */
+    /* Main background #F4F7FB */
+    .stApp {
+        background-color: #F4F7FB !important;
+        color: #17243A !important;
+    }
+
+    /* High contrast headings */
+    h1, h2, h3, h4, h5, h6 {
+        color: #17243A !important;
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 700 !important;
+    }
+
+    p, span, label, div {
+        color: #17243A;
+    }
+
+    /* ── Sidebar: Navy #17243A ────────────────────────────────────────── */
     [data-testid="stSidebar"] {
-        background-color: #1E293B;
+        background-color: #17243A !important;
+        border-right: 1px solid #0F172A;
     }
     [data-testid="stSidebar"] * {
-        color: #E2E8F0 !important;
+        color: #F8FAFC !important;
     }
     [data-testid="stSidebar"] .stRadio label {
-        font-size: 0.95rem;
-        padding: 4px 0;
+        font-size: 0.95rem !important;
+        font-weight: 600 !important;
+        color: #E2E8F0 !important;
+        padding: 6px 10px;
+        border-radius: 6px;
+        transition: all 0.15s ease-in-out;
+    }
+    [data-testid="stSidebar"] .stRadio label:hover {
+        background-color: rgba(47, 128, 237, 0.2) !important;
+        color: #FFFFFF !important;
+    }
+    [data-testid="stSidebar"] hr {
+        border-color: rgba(255, 255, 255, 0.15) !important;
     }
 
-    /* ── Metric / KPI cards ───────────────────────────────────────────── */
+    /* ── Metric / KPI Cards ───────────────────────────────────────────── */
     .kpi-card {
         background: #FFFFFF;
-        border-radius: 10px;
-        padding: 20px 24px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-        border-top: 4px solid #3B82F6;
-        margin-bottom: 8px;
+        border-radius: 12px;
+        padding: 22px 24px;
+        box-shadow: 0 2px 10px rgba(23, 36, 58, 0.07);
+        border: 1px solid #E2E8F0;
+        border-top: 5px solid #17243A;
+        margin-bottom: 12px;
+        transition: transform 0.15s ease;
     }
-    .kpi-card.amber  { border-top-color: #F59E0B; }
-    .kpi-card.green  { border-top-color: #10B981; }
-    .kpi-card.purple { border-top-color: #8B5CF6; }
+    .kpi-card:hover {
+        transform: translateY(-2px);
+    }
+    .kpi-card.blue   { border-top-color: #2F80ED; }
+    .kpi-card.teal   { border-top-color: #14B8A6; }
+    .kpi-card.navy   { border-top-color: #17243A; }
 
     .kpi-label {
-        font-size: 0.75rem;
-        font-weight: 600;
+        font-size: 0.8rem;
+        font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #64748B;
-        margin-bottom: 6px;
+        color: #475569;
+        margin-bottom: 8px;
     }
     .kpi-value {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1E293B;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #17243A;
         line-height: 1.1;
     }
     .kpi-unit {
-        font-size: 0.9rem;
-        color: #94A3B8;
-        margin-left: 4px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #64748B;
+        margin-left: 5px;
     }
 
-    /* ── Section headers ──────────────────────────────────────────────── */
+    /* ── Section Headers ──────────────────────────────────────────────── */
     .section-header {
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: #1E293B;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #17243A;
         margin-bottom: 4px;
         padding-bottom: 8px;
-        border-bottom: 2px solid #E2E8F0;
+        border-bottom: 2px solid #CBD5E1;
     }
     .section-sub {
-        font-size: 0.85rem;
-        color: #64748B;
-        margin-bottom: 20px;
+        font-size: 0.92rem;
+        color: #334155;
+        margin-bottom: 22px;
+        font-weight: 500;
     }
 
-    /* ── Data-source badge ────────────────────────────────────────────── */
+    /* ── Data-source Badge ────────────────────────────────────────────── */
     .badge-demo {
         display: inline-block;
         background: #FEF3C7;
         color: #92400E;
         border: 1px solid #FCD34D;
-        border-radius: 4px;
-        padding: 2px 10px;
-        font-size: 0.75rem;
-        font-weight: 600;
+        border-radius: 6px;
+        padding: 3px 12px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        margin-left: 8px;
     }
     .badge-real {
         display: inline-block;
-        background: #D1FAE5;
-        color: #065F46;
-        border: 1px solid #6EE7B7;
-        border-radius: 4px;
-        padding: 2px 10px;
-        font-size: 0.75rem;
-        font-weight: 600;
+        background: #CCFBF1;
+        color: #0F766E;
+        border: 1px solid #5EEAD4;
+        border-radius: 6px;
+        padding: 3px 12px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        margin-left: 8px;
     }
 
-    /* ── Stat rows in analysis page ───────────────────────────────────── */
+    /* ── Stat Rows in Analysis Page ───────────────────────────────────── */
     .stat-row {
         display: flex;
         justify-content: space-between;
-        padding: 10px 0;
-        border-bottom: 1px solid #F1F5F9;
+        padding: 12px 16px;
+        border-bottom: 1px solid #E2E8F0;
         align-items: center;
+        background: #FFFFFF;
+        border-radius: 8px;
+        margin-bottom: 6px;
+        box-shadow: 0 1px 3px rgba(23, 36, 58, 0.04);
     }
-    .stat-name  { font-weight: 500; color: #334155; font-size: 0.92rem; }
-    .stat-value { font-weight: 700; color: #1E293B; font-size: 1.05rem; }
-    .stat-note  { font-size: 0.78rem; color: #94A3B8; margin-top: 2px; }
+    .stat-name  { font-weight: 600; color: #17243A; font-size: 0.95rem; }
+    .stat-value { font-weight: 800; color: #17243A; font-size: 1.05rem; }
+    .stat-note  { font-size: 0.8rem; color: #475569; margin-top: 3px; font-weight: 400; }
 
-    /* ── Conclusion box ───────────────────────────────────────────────── */
-    .conclusion-box {
-        background: #F0FDF4;
-        border-left: 4px solid #10B981;
-        border-radius: 6px;
-        padding: 20px 24px;
-        margin: 16px 0;
-        line-height: 1.7;
-        color: #1E293B;
+    /* ── High-Contrast Box & Card Panels ──────────────────────────────── */
+    .content-box {
+        background: #FFFFFF;
+        border-radius: 12px;
+        padding: 22px 26px;
+        border: 1px solid #CBD5E1;
+        box-shadow: 0 2px 8px rgba(23, 36, 58, 0.05);
+        margin-bottom: 18px;
     }
-    .conclusion-box.reject {
-        background: #EFF6FF;
-        border-left-color: #3B82F6;
+
+    /* ── Plain-English Automatic Interpretation Box ───────────────────── */
+    .interpretation-card {
+        background: #FFFFFF;
+        border-left: 6px solid #14B8A6;
+        border-radius: 12px;
+        padding: 24px 28px;
+        margin: 18px 0;
+        line-height: 1.75;
+        color: #17243A;
+        border-top: 1px solid #E2E8F0;
+        border-right: 1px solid #E2E8F0;
+        border-bottom: 1px solid #E2E8F0;
+        box-shadow: 0 2px 10px rgba(23, 36, 58, 0.06);
+    }
+    .interpretation-card h4 {
+        color: #17243A !important;
+        font-size: 1.2rem;
+        font-weight: 800;
+        margin-top: 0;
+        margin-bottom: 12px;
+    }
+    .interpretation-card p {
+        color: #1E293B !important;
+        font-size: 0.98rem;
+        margin-bottom: 12px;
+    }
+    .interpretation-card strong {
+        color: #17243A !important;
+        font-weight: 700;
     }
 
     /* Hide Streamlit branding */
@@ -247,23 +315,37 @@ if "data_source" not in st.session_state:
 # SECTION 6 -- SHARED HELPERS
 # =============================================================================
 
-# ── 6a. Chart color palette ───────────────────────────────────────────────────
-# Using a consistent palette across all charts makes the dashboard feel cohesive.
-C_BEFORE  = "#3B82F6"   # Blue -- before-practice values
-C_AFTER   = "#F59E0B"   # Amber -- after-practice values
-C_POS     = "#10B981"   # Green -- positive improvement
-C_NEG     = "#EF4444"   # Red   -- negative change (got slower)
-C_GRID    = "#F1F5F9"   # Very light gray for chart backgrounds
-C_TEXT    = "#334155"   # Dark slate for axis labels
+# ── 6a. Theme Palette (Navy, Blue, Teal, White, Light BG) ────────────────────
+C_NAVY    = "#17243A"   # Navy -- headings, primary text, dark accents
+C_WHITE   = "#FFFFFF"   # White -- cards, chart background
+C_BEFORE  = "#2F80ED"   # Blue -- before-practice values
+C_AFTER   = "#14B8A6"   # Teal -- after-practice values
+C_POS     = "#14B8A6"   # Teal -- positive improvement
+C_NEG     = "#E11D48"   # Red/Crimson -- negative change (got slower)
+C_GRID    = "#E2E8F0"   # Light border grid
+C_TEXT    = "#17243A"   # High-contrast Navy text for all charts & labels
+C_MUTED   = "#475569"   # Muted high-contrast slate
 
 # Shared Plotly layout defaults applied to every chart
 CHART_LAYOUT = dict(
     font=dict(family="Inter, sans-serif", color=C_TEXT, size=12),
-    plot_bgcolor="white",
-    paper_bgcolor="white",
-    margin=dict(l=40, r=20, t=50, b=40),
-    hoverlabel=dict(bgcolor="white", font_size=12, font_family="Inter"),
+    plot_bgcolor=C_WHITE,
+    paper_bgcolor=C_WHITE,
+    margin=dict(l=45, r=25, t=55, b=45),
+    hoverlabel=dict(bgcolor=C_NAVY, font_size=12, font_family="Inter", font_color="#FFFFFF"),
 )
+
+
+def format_p_value(pval: float | None) -> str:
+    """
+    Format a p-value with scientific precision and readable threshold.
+    Avoids misleading 'p = 0.0000' for extremely small p-values.
+    """
+    if pval is None:
+        return "N/A"
+    if pval < 0.0001:
+        return f"{pval:.4e} (p < 0.001)"
+    return f"{pval:.4f}"
 
 
 def get_analysis():
@@ -320,7 +402,7 @@ def source_badge() -> str:
 
 def kpi_card(label: str, value: str, unit: str = "", color: str = "") -> str:
     """Return HTML for a styled KPI metric card."""
-    color_class = {"amber": "amber", "green": "green", "purple": "purple"}.get(color, "")
+    color_class = {"blue": "blue", "teal": "teal", "navy": "navy", "green": "teal", "amber": "teal"}.get(color, "navy")
     return f"""
     <div class="kpi-card {color_class}">
         <div class="kpi-label">{label}</div>
@@ -330,10 +412,27 @@ def kpi_card(label: str, value: str, unit: str = "", color: str = "") -> str:
 
 
 def apply_chart_defaults(fig: go.Figure, title: str = "") -> go.Figure:
-    """Apply consistent layout defaults to any Plotly figure."""
-    fig.update_layout(**CHART_LAYOUT, title=dict(text=title, font=dict(size=14, color=C_TEXT)))
-    fig.update_xaxes(gridcolor=C_GRID, linecolor="#E2E8F0", tickfont=dict(size=11))
-    fig.update_yaxes(gridcolor=C_GRID, linecolor="#E2E8F0", tickfont=dict(size=11))
+    """Apply consistent layout defaults to any Plotly figure with high contrast."""
+    fig.update_layout(
+        **CHART_LAYOUT,
+        title=dict(text=f"<b>{title}</b>", font=dict(size=14, color=C_TEXT)),
+        legend=dict(
+            font=dict(size=12, color=C_TEXT),
+            title=dict(font=dict(size=12, color=C_TEXT)),
+        ),
+    )
+    fig.update_xaxes(
+        gridcolor=C_GRID,
+        linecolor="#CBD5E1",
+        tickfont=dict(size=11, color=C_TEXT),
+        title_font=dict(size=12, color=C_TEXT, family="Inter"),
+    )
+    fig.update_yaxes(
+        gridcolor=C_GRID,
+        linecolor="#CBD5E1",
+        tickfont=dict(size=11, color=C_TEXT),
+        title_font=dict(size=12, color=C_TEXT, family="Inter"),
+    )
     return fig
 
 
@@ -378,23 +477,23 @@ def page_overview():
 
     with c1:
         st.markdown(
-            kpi_card("Students", str(results["n"]), " pairs"),
+            kpi_card("Students Tested", str(results["n"]), " pairs", "navy"),
             unsafe_allow_html=True,
         )
     with c2:
         st.markdown(
-            kpi_card("Mean Speed -- Before", f"{results['mean_before']:.1f}", " WPM", ""),
+            kpi_card("Mean Speed -- Before", f"{results['mean_before']:.1f}", " WPM", "blue"),
             unsafe_allow_html=True,
         )
     with c3:
         st.markdown(
-            kpi_card("Mean Speed -- After", f"{results['mean_after']:.1f}", " WPM", "amber"),
+            kpi_card("Mean Speed -- After", f"{results['mean_after']:.1f}", " WPM", "teal"),
             unsafe_allow_html=True,
         )
     with c4:
         sign = "+" if results["mean_diff"] >= 0 else ""
         st.markdown(
-            kpi_card("Mean Improvement", f"{sign}{results['mean_diff']:.1f}", " WPM", "green"),
+            kpi_card("Mean Improvement", f"{sign}{results['mean_diff']:.1f}", " WPM", "teal"),
             unsafe_allow_html=True,
         )
 
@@ -402,12 +501,11 @@ def page_overview():
 
     # ── Overview chart: grouped before/after bar ───────────────────────────────
     # This gives an at-a-glance view of every student's progress.
-    # Each student gets two bars (before = blue, after = amber).
+    # Each student gets two bars (before = blue #2F80ED, after = teal #14B8A6).
     left, right = st.columns([2, 1])
 
     with left:
         ids   = results["ids"]
-        names = [r.get("name", sid) for r, sid in zip(st.session_state.records, ids)]
         labels = [f"{sid}" for sid in ids]  # short labels for x-axis
 
         fig = go.Figure()
@@ -419,7 +517,8 @@ def page_overview():
             marker_color=C_BEFORE,
             text=[f"{v:.0f}" for v in results["before"]],
             textposition="outside",
-            hovertemplate="<b>%{x}</b><br>Before: %{y} WPM<extra></extra>",
+            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            hovertemplate="<b>%{x}</b><br>Before Practice: %{y:.1f} WPM<extra></extra>",
         ))
         fig.add_trace(go.Bar(
             name="After Practice",
@@ -428,12 +527,20 @@ def page_overview():
             marker_color=C_AFTER,
             text=[f"{v:.0f}" for v in results["after"]],
             textposition="outside",
-            hovertemplate="<b>%{x}</b><br>After: %{y} WPM<extra></extra>",
+            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            hovertemplate="<b>%{x}</b><br>After Practice: %{y:.1f} WPM<extra></extra>",
         ))
 
         fig.update_layout(
             barmode="group",
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1,
+                font=dict(size=12, color=C_TEXT, family="Inter"),
+            ),
             yaxis_title="Typing Speed (WPM)",
             xaxis_title="Student ID",
         )
@@ -447,29 +554,29 @@ def page_overview():
         alpha = results["alpha"]
 
         if pval is not None:
-            p_str = f"{pval:.4f}"
-            verdict = "**Significant** ✅" if sig else "**Not Significant** ❌"
-            color   = "#D1FAE5" if sig else "#FEE2E2"
-            border  = "#10B981" if sig else "#EF4444"
+            p_str = format_p_value(pval)
+            verdict = "<span style='color:#0F766E;font-weight:800;'>Significant Improvement ✅</span>" if sig else "<span style='color:#BE123C;font-weight:800;'>Not Statistically Significant ❌</span>"
+            card_bg = "#CCFBF1" if sig else "#FFE4E6"
+            border_col = "#14B8A6" if sig else "#E11D48"
         else:
             p_str   = "N/A"
-            verdict = "Cannot compute"
-            color   = "#F1F5F9"
-            border  = "#94A3B8"
+            verdict = "<span style='color:#475569;font-weight:700;'>Cannot compute (zero variance)</span>"
+            card_bg = "#F1F5F9"
+            border_col = "#94A3B8"
 
         st.markdown(
             f"""
-            <div style="background:{color};border-left:4px solid {border};
-                        border-radius:8px;padding:18px;margin-top:8px;">
-                <div style="font-size:0.75rem;font-weight:600;color:#64748B;
-                            text-transform:uppercase;letter-spacing:0.06em;">
-                    Hypothesis Test
+            <div style="background:{card_bg};border:1px solid #CBD5E1;border-left:5px solid {border_col};
+                        border-radius:10px;padding:20px;box-shadow:0 2px 8px rgba(23,36,58,0.06);margin-top:6px;">
+                <div style="font-size:0.78rem;font-weight:800;color:#17243A;
+                            text-transform:uppercase;letter-spacing:0.08em;">
+                    Hypothesis Test Outcome
                 </div>
-                <div style="font-size:1.1rem;margin:8px 0;">{verdict}</div>
-                <div style="font-size:0.85rem;color:#475569;">
-                    p-value = {p_str}<br>
-                    alpha = {alpha}<br>
-                    df = {results['df']}
+                <div style="font-size:1.15rem;margin:10px 0 12px 0;">{verdict}</div>
+                <div style="font-size:0.9rem;color:#17243A;line-height:1.8;font-weight:500;">
+                    <strong>p-value:</strong> {p_str}<br>
+                    <strong>Significance level (&alpha;):</strong> {alpha}<br>
+                    <strong>Degrees of freedom (df):</strong> {results['df']}
                 </div>
             </div>
             """,
@@ -478,12 +585,14 @@ def page_overview():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Quick stats mini-table
-        st.markdown("**Quick Stats**")
+        # Quick stats mini-table with high contrast
+        st.markdown("<h4 style='color:#17243A;margin-top:8px;margin-bottom:8px;'>⚡ Quick Stats</h4>", unsafe_allow_html=True)
         quick = {
-            "Mean diff (d_bar)": f"{results['mean_diff']:+.2f} WPM",
-            "SD of diffs":    f"{results['std_diff']:.2f}",
-            "t-statistic":    f"{results['t_statistic']:.4f}" if results["t_statistic"] else "N/A",
+            "Mean difference (d_bar)": f"{results['mean_diff']:+.2f} WPM",
+            "SD of differences (s_d)": f"{results['std_diff']:.2f}",
+            "Standard Error (SE_d)":   f"{results['standard_error']:.2f} WPM",
+            "95% Confidence Interval": f"[{results['ci_95_lower']:.2f}, {results['ci_95_upper']:.2f}]",
+            "t-statistic":             f"{results['t_statistic']:.4f}" if results["t_statistic"] is not None else "N/A",
         }
         for k, v in quick.items():
             st.markdown(
@@ -838,30 +947,43 @@ def page_visualizations():
         # --- Chart 1: Grouped Bar -- individual student before vs after ---
         fig1 = go.Figure()
         fig1.add_trace(go.Bar(
-            name="Before",
+            name="Before Practice",
             x=ids,
             y=before.tolist(),
             marker_color=C_BEFORE,
-            hovertemplate="<b>%{x}</b><br>Before: %{y:.1f} WPM<extra></extra>",
+            text=[f"{v:.0f}" for v in results["before"]],
+            textposition="outside",
+            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            hovertemplate="<b>%{x}</b><br>Before Practice: %{y:.1f} WPM<extra></extra>",
         ))
         fig1.add_trace(go.Bar(
-            name="After",
+            name="After Practice",
             x=ids,
             y=after.tolist(),
             marker_color=C_AFTER,
-            hovertemplate="<b>%{x}</b><br>After: %{y:.1f} WPM<extra></extra>",
+            text=[f"{v:.0f}" for v in results["after"]],
+            textposition="outside",
+            textfont=dict(color=C_TEXT, size=11, family="Inter"),
+            hovertemplate="<b>%{x}</b><br>After Practice: %{y:.1f} WPM<extra></extra>",
         ))
         fig1.update_layout(
             barmode="group",
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1,
+                font=dict(size=12, color=C_TEXT, family="Inter"),
+            ),
             yaxis_title="Typing Speed (WPM)",
             xaxis_title="Student ID",
         )
         apply_chart_defaults(fig1, "Before & After Typing Speed per Student")
         st.plotly_chart(fig1, use_container_width=True)
         st.caption(
-            "Each student has two bars. Blue = speed before practice, "
-            "Amber = speed after practice."
+            "Each student has two bars. Blue (#2F80ED) = speed before practice, "
+            "Teal (#14B8A6) = speed after practice."
         )
 
     with col2:
@@ -878,13 +1000,13 @@ def page_visualizations():
             type="line",
             x0=axis_min, y0=axis_min,
             x1=axis_max, y1=axis_max,
-            line=dict(color="#CBD5E1", width=1.5, dash="dash"),
+            line=dict(color="#94A3B8", width=1.8, dash="dash"),
         )
         fig2.add_annotation(
             x=axis_max - 2, y=axis_max - 4,
             text="No change (y = x)",
             showarrow=False,
-            font=dict(size=10, color="#94A3B8"),
+            font=dict(size=11, color=C_TEXT, family="Inter"),
         )
 
         fig2.add_trace(go.Scatter(
@@ -893,11 +1015,11 @@ def page_visualizations():
             mode="markers+text",
             text=ids,
             textposition="top center",
-            textfont=dict(size=10),
+            textfont=dict(size=11, color=C_TEXT, family="Inter"),
             marker=dict(
                 color=[C_POS if d >= 0 else C_NEG for d in diffs],
-                size=10,
-                line=dict(color="white", width=1.5),
+                size=11,
+                line=dict(color="white", width=2),
             ),
             hovertemplate=(
                 "<b>%{text}</b><br>"
@@ -910,15 +1032,15 @@ def page_visualizations():
         ))
 
         fig2.update_layout(
-            xaxis=dict(title="Before WPM", range=[axis_min, axis_max]),
-            yaxis=dict(title="After WPM",  range=[axis_min, axis_max]),
+            xaxis=dict(title="Before Practice (WPM)", range=[axis_min, axis_max]),
+            yaxis=dict(title="After Practice (WPM)",  range=[axis_min, axis_max]),
             showlegend=False,
         )
         apply_chart_defaults(fig2, "Before vs After (per Student) -- Scatter Plot")
         st.plotly_chart(fig2, use_container_width=True)
         st.caption(
             "Points above the dashed line improved; below the line means slower after practice. "
-            "Green = improved, Red = declined."
+            "Teal (#14B8A6) = improved, Red (#E11D48) = declined."
         )
 
     # ── Chart 3 & 4 (bottom row) ──────────────────────────────────────────────
@@ -934,6 +1056,7 @@ def page_visualizations():
             marker_color=bar_colors,
             text=[f"{d:+.1f}" for d in diffs],
             textposition="outside",
+            textfont=dict(color=C_TEXT, size=11, family="Inter"),
             hovertemplate=(
                 "<b>%{x}</b><br>"
                 "Improvement: %{y:+.1f} WPM<extra></extra>"
@@ -941,7 +1064,7 @@ def page_visualizations():
         ))
 
         # Horizontal zero line
-        fig3.add_hline(y=0, line_color="#94A3B8", line_width=1)
+        fig3.add_hline(y=0, line_color="#64748B", line_width=1.5)
 
         fig3.update_layout(
             yaxis_title="WPM Change (After - Before)",
@@ -950,8 +1073,8 @@ def page_visualizations():
         apply_chart_defaults(fig3, "Individual WPM Improvement per Student")
         st.plotly_chart(fig3, use_container_width=True)
         st.caption(
-            "Positive bars (green) = student typed faster after practice. "
-            "Negative bars (red) = student typed slower."
+            "Positive bars (Teal) = student typed faster after practice. "
+            "Negative bars (Red) = student typed slower."
         )
 
     with col4:
@@ -962,14 +1085,14 @@ def page_visualizations():
 
         fig4.add_trace(go.Box(
             y=before.tolist(),
-            name="Before",
+            name="Before Practice",
             marker_color=C_BEFORE,
             boxmean=True,           # Show mean as a dashed line inside the box
             hovertemplate="Before WPM<br>%{y:.1f}<extra></extra>",
         ))
         fig4.add_trace(go.Box(
             y=after.tolist(),
-            name="After",
+            name="After Practice",
             marker_color=C_AFTER,
             boxmean=True,
             hovertemplate="After WPM<br>%{y:.1f}<extra></extra>",
@@ -978,7 +1101,14 @@ def page_visualizations():
         fig4.update_layout(
             yaxis_title="Typing Speed (WPM)",
             showlegend=True,
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1,
+                font=dict(size=12, color=C_TEXT, family="Inter"),
+            ),
         )
         apply_chart_defaults(fig4, "Speed Distribution -- Before vs After")
         st.plotly_chart(fig4, use_container_width=True)
@@ -1020,27 +1150,28 @@ def page_statistical_analysis():
     col_desc, col_diff = st.columns(2)
 
     with col_desc:
-        st.markdown("#### 📐 Descriptive Statistics")
+        st.markdown("<h4 style='color:#17243A;'>📐 Descriptive Statistics</h4>", unsafe_allow_html=True)
         st.markdown(
-            "These numbers summarise the *raw* typing speeds in the two groups."
+            "<span style='color:#334155;'>Summary of raw typing speeds before and after deliberate practice.</span>",
+            unsafe_allow_html=True,
         )
 
         stats_rows = [
-            ("n (paired students)",
+            ("Sample Size (n paired students)",
              str(results["n"]),
-             "Number of matched before/after measurements."),
-            ("Mean -- Before (x_bar1)",
+             "Number of matched before/after student observations."),
+            ("Mean Speed -- Before (x_bar1)",
              f"{results['mean_before']:.4f} WPM",
-             "Average speed before the practice session."),
-            ("Mean -- After (x_bar2)",
+             "Average typing speed before the practice session."),
+            ("Mean Speed -- After (x_bar2)",
              f"{results['mean_after']:.4f} WPM",
-             "Average speed after the practice session."),
-            ("Sample SD -- Before (s1)",
+             "Average typing speed after the practice session."),
+            ("Sample Standard Deviation -- Before (s1)",
              f"{results['std_before']:.4f}",
-             "Spread of before-speeds. Uses n-1 (Bessel's correction)."),
-            ("Sample SD -- After (s2)",
+             "Spread of pre-practice speeds (Bessel's correction n-1)."),
+            ("Sample Standard Deviation -- After (s2)",
              f"{results['std_after']:.4f}",
-             "Spread of after-speeds. Uses n-1 (Bessel's correction)."),
+             "Spread of post-practice speeds (Bessel's correction n-1)."),
         ]
 
         for name, value, note in stats_rows:
@@ -1058,21 +1189,31 @@ def page_statistical_analysis():
             )
 
     with col_diff:
-        st.markdown("#### 🔁 Paired Difference Statistics")
+        st.markdown("<h4 style='color:#17243A;'>🔁 Paired Difference Statistics</h4>", unsafe_allow_html=True)
         st.markdown(
-            "Computed on **d = after - before** for each individual student."
+            "<span style='color:#334155;'>Computed on individual differences: <strong>d = after - before</strong>.</span>",
+            unsafe_allow_html=True,
         )
+
+        ci_str = f"[{results['ci_95_lower']:.4f}, {results['ci_95_upper']:.4f}] WPM" if results.get("ci_95_lower") is not None else "N/A"
+        t_crit_str = f"{results['t_crit']:.4f}" if results.get("t_crit") is not None else "N/A"
 
         diffs_rows = [
             ("Mean Difference (d_bar)",
              f"{results['mean_diff']:+.4f} WPM",
-             "Average improvement per student. Positive = improved."),
-            ("SD of Differences (s_d)",
+             "Average improvement per student. Positive = speed gained."),
+            ("Sample SD of Differences (s_d)",
              f"{results['std_diff']:.4f}",
-             "How consistently students improved. Lower = more uniform change."),
-            ("Standard Error (s_d / sqrtn)",
-             f"{results['std_diff'] / (results['n'] ** 0.5):.4f} WPM",
-             "Uncertainty in our estimate of d_bar. Decreases as n grows."),
+             "Standard deviation of the improvements across students."),
+            ("Standard Error (SE_d = s_d / sqrt(n))",
+             f"{results['standard_error']:.4f} WPM",
+             "Uncertainty in estimated d_bar. Decreases as sample size grows."),
+            ("Critical Value (t* at alpha=0.05)",
+             t_crit_str,
+             f"Two-tailed critical t-value with df = {results['df']}."),
+            ("95% Confidence Interval",
+             ci_str,
+             "Estimated range for the true population mean improvement."),
         ]
 
         for name, value, note in diffs_rows:
@@ -1091,13 +1232,14 @@ def page_statistical_analysis():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Row 2: Paired t-test results + plain-English guide ────────────────────
-    col_test, col_explain = st.columns([1, 1.4])
+    # ── Row 2: Paired t-test results + 95% Confidence Interval Card ──────────
+    col_test, col_explain = st.columns([1.1, 1.3])
 
     with col_test:
-        st.markdown("#### 🧪 Paired t-Test Results")
+        st.markdown("<h4 style='color:#17243A;'>🧪 Paired-Sample t-Test Results</h4>", unsafe_allow_html=True)
         st.markdown(
-            "Tests whether the mean improvement is real or just random noise."
+            "<span style='color:#334155;'>Inferential test to evaluate whether observed improvement is statistically significant.</span>",
+            unsafe_allow_html=True,
         )
 
         t_val = results["t_statistic"]
@@ -1107,32 +1249,32 @@ def page_statistical_analysis():
 
         ttest_rows = [
             ("Null Hypothesis (H0)",
-             "d_bar = 0",
-             "Practice made no difference on average."),
-            ("Alt. Hypothesis (H1)",
-             "d_bar != 0",
-             "Practice changed typing speed (two-tailed)."),
-            ("Significance Level (alpha)",
+             "mu_d = 0",
+             "Practice produces no net change in typing speed."),
+            ("Alternative Hypothesis (H1)",
+             "mu_d != 0",
+             "Practice changes typing speed (two-tailed test)."),
+            ("Significance Threshold (alpha)",
              str(alpha),
-             "We accept a 5% chance of a wrong conclusion."),
-            ("t-Statistic",
-             f"{t_val:.4f}" if t_val is not None else "N/A",
-             "How many standard errors d_bar is from zero."),
+             "We accept a 5% maximum risk of Type I error."),
             ("Degrees of Freedom (df)",
              str(results["df"]),
              "df = n - 1."),
-            ("p-Value",
-             f"{p_val:.4f}" if p_val is not None else "N/A",
-             "Probability of this result if H0 were true."),
-            ("Decision",
-             "Reject H0 ✅" if sig else "Fail to reject H0",
+            ("Paired t-Statistic",
+             f"{t_val:.4f}" if t_val is not None else "N/A",
+             "t = d_bar / SE_d. Distance from zero in SE units."),
+            ("Calculated p-Value",
+             format_p_value(p_val),
+             "Probability of observing this result under H0."),
+            ("Statistical Decision",
+             "Reject H0 ✅ (Significant)" if sig else "Fail to Reject H0 ❌",
              f"p {'<' if sig else '>='} alpha = {alpha}"),
         ]
 
         for name, value, note in ttest_rows:
-            val_color = ""
-            if name == "Decision":
-                val_color = "color:#10B981;font-weight:700" if sig else "color:#EF4444;font-weight:700"
+            val_style = "color:#17243A;font-weight:800"
+            if name == "Statistical Decision":
+                val_style = "color:#0F766E;font-weight:800" if sig else "color:#E11D48;font-weight:800"
             st.markdown(
                 f"""
                 <div class="stat-row">
@@ -1140,43 +1282,49 @@ def page_statistical_analysis():
                         <div class="stat-name">{name}</div>
                         <div class="stat-note">{note}</div>
                     </div>
-                    <div class="stat-value" style="{val_color}">{value}</div>
+                    <div class="stat-value" style="{val_style}">{value}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
     with col_explain:
-        st.markdown("#### 📖 What do these numbers mean?")
-        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#17243A;'>🎯 Confidence Interval & Interpretation</h4>", unsafe_allow_html=True)
+
+        if results.get("ci_95_lower") is not None and results.get("ci_95_upper") is not None:
+            moe = (results["ci_95_upper"] - results["ci_95_lower"]) / 2.0
+            st.markdown(
+                f"""
+                <div style="background:#FFFFFF;border:1px solid #CBD5E1;border-left:5px solid #2F80ED;
+                            border-radius:10px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 6px rgba(23,36,58,0.05);">
+                    <div style="font-size:0.8rem;font-weight:800;color:#17243A;text-transform:uppercase;letter-spacing:0.07em;">
+                        95% Confidence Interval for Mean Improvement
+                    </div>
+                    <div style="font-size:1.45rem;font-weight:800;color:#2F80ED;margin:8px 0 6px 0;">
+                        [{results['ci_95_lower']:.2f}, {results['ci_95_upper']:.2f}] WPM
+                    </div>
+                    <div style="font-size:0.88rem;color:#1E293B;line-height:1.6;">
+                        Margin of error: &plusmn;{moe:.2f} WPM.<br>
+                        We are 95% confident that the true average improvement across all comparable students is between <strong>{results['ci_95_lower']:.2f}</strong> and <strong>{results['ci_95_upper']:.2f} WPM</strong>.
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
         st.markdown(
             """
-            **Why a *paired* t-test?**
-            Because the same student is measured twice (before and after).
-            A paired test compares each person to their *own* baseline, removing
-            natural differences in typing ability between students.
-
-            **What is the t-statistic?**
-            It tells you how many standard errors the mean improvement (d_bar)
-            sits away from zero. A large |t| means the improvement is large
-            compared to the variability in your data -- making it unlikely to
-            be a fluke.
-
-            **What is the p-value?**
-            If practice had *no effect at all*, the p-value is the probability
-            of seeing an improvement at least as large as the one you measured --
-            purely by random chance. A small p-value means "this improvement
-            is hard to explain by luck alone."
-
-            **The alpha = 0.05 threshold**
-            We decide in advance that if p < 0.05 (a 5% chance), the result
-            is "statistically significant" -- i.e., we have enough evidence to
-            say practice made a real difference.
-            """
+            <div style="color:#17243A;line-height:1.7;font-size:0.92rem;">
+                <p><strong>Why is a paired t-test required?</strong><br>
+                Because measurements are taken on the exact same students before and after practice. A paired test analyzes the intra-subject differences (d = after - before), isolating the effect of practice from natural baseline typing ability.</p>
+                <p><strong>How to interpret the p-value:</strong><br>
+                The p-value is the probability of observing an improvement at least as large as what we measured purely by chance if practice had no true effect. A p-value below 0.05 provides strong evidence to reject the null hypothesis.</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
-        # Show the student-level differences as a mini chart
+        # Show the student-level differences as a mini chart with high contrast
         diffs = results["differences"]
         ids   = results["ids"]
 
@@ -1184,20 +1332,27 @@ def page_statistical_analysis():
             x=ids,
             y=diffs.tolist(),
             marker_color=[C_POS if d >= 0 else C_NEG for d in diffs],
-            hovertemplate="<b>%{x}</b><br>d = %{y:+.1f} WPM<extra></extra>",
+            text=[f"{d:+.1f}" for d in diffs],
+            textposition="outside",
+            textfont=dict(color=C_TEXT, size=10, family="Inter"),
+            hovertemplate="<b>%{x}</b><br>Difference (d): %{y:+.1f} WPM<extra></extra>",
         ))
-        fig_mini.add_hline(y=float(results["mean_diff"]),
-                           line_dash="dash", line_color="#64748B",
-                           annotation_text=f"d_bar = {results['mean_diff']:+.2f}",
-                           annotation_position="top left")
+        fig_mini.add_hline(
+            y=float(results["mean_diff"]),
+            line_dash="dash",
+            line_color="#17243A",
+            line_width=1.8,
+            annotation_text=f"Mean d_bar = {results['mean_diff']:+.2f}",
+            annotation_position="top left",
+            annotation_font=dict(color=C_TEXT, size=11, family="Inter"),
+        )
         fig_mini.update_layout(
-            height=200,
+            height=210,
             margin=dict(l=30, r=10, t=30, b=30),
-            yaxis_title="d (WPM)",
+            yaxis_title="Change (WPM)",
             showlegend=False,
             **{k: v for k, v in CHART_LAYOUT.items() if k not in ("margin",)},
         )
-        fig_mini.update_layout(margin=dict(l=30, r=10, t=30, b=30))
         st.plotly_chart(fig_mini, use_container_width=True)
         st.caption("Individual differences (d = after - before). Dashed line = mean difference d_bar.")
 
@@ -1206,19 +1361,125 @@ def page_statistical_analysis():
 # SECTION 11 -- PAGE: CONCLUSION & EXPORT
 # =============================================================================
 
+def generate_automatic_interpretation(results: dict, data_source: str) -> dict:
+    """
+    Generate a dynamic, academically rigorous, plain-English summary of the study
+    using pure Python logic on the actual calculated statistics.
+    No generative AI API call is used.
+    """
+    n          = results["n"]
+    mean_b     = results["mean_before"]
+    mean_a     = results["mean_after"]
+    mean_d     = results["mean_diff"]
+    std_b      = results["std_before"]
+    std_a      = results["std_after"]
+    std_d      = results["std_diff"]
+    se_d       = results.get("standard_error", std_d / (n ** 0.5) if n > 0 else 0.0)
+    ci_low     = results.get("ci_95_lower")
+    ci_high    = results.get("ci_95_upper")
+    t_val      = results["t_statistic"]
+    df         = results["df"]
+    p_val      = results["p_value"]
+    sig        = results["significant"]
+    alpha      = results["alpha"]
+
+    abs_d = abs(mean_d)
+    direction_verb = "increased" if mean_d > 0 else ("decreased" if mean_d < 0 else "remained identical")
+    direction_adj  = "faster" if mean_d > 0 else ("slower" if mean_d < 0 else "unchanged")
+    pct_change     = (mean_d / mean_b * 100.0) if mean_b > 0 else 0.0
+
+    # 1. Change in typing speed
+    change_text = (
+        f"Across the cohort of {n} paired students, average typing speed {direction_verb} "
+        f"from {mean_b:.2f} WPM (sample SD = {std_b:.2f}) before practice to "
+        f"{mean_a:.2f} WPM (sample SD = {std_a:.2f}) after practice. "
+        f"The mean paired change was {mean_d:+.2f} WPM (a {pct_change:+.1f}% change), "
+        f"meaning students typed on average {abs_d:.2f} WPM {direction_adj} after the practice session. "
+        f"The sample standard deviation of differences was s_d = {std_d:.2f} WPM, with a standard error of SE_d = {se_d:.2f} WPM."
+    )
+
+    # 2. Statistical significance at alpha = 0.05
+    if p_val is not None:
+        p_str = format_p_value(p_val)
+        if sig:
+            sig_text = (
+                f"The difference is statistically significant at the alpha = {alpha} significance level (two-tailed p = {p_str} < {alpha}). "
+                f"Because the calculated p-value is less than the predetermined 0.05 threshold, the observed gain cannot be attributed to chance."
+            )
+        else:
+            sig_text = (
+                f"The difference is NOT statistically significant at the alpha = {alpha} level (two-tailed p = {p_str} >= {alpha}). "
+                f"There is insufficient evidence in this dataset to confirm that deliberate practice caused a reliable shift in speed."
+            )
+    else:
+        sig_text = "The paired t-test could not be evaluated due to zero variance across student differences."
+
+    # 3. Meaning of the p-value
+    if p_val is not None:
+        if p_val < 0.001:
+            p_meaning = (
+                f"The calculated p-value ({p_str}) measures the probability of observing a speed improvement "
+                f"of {abs_d:.2f} WPM or greater purely by random fluctuation if deliberate practice had no genuine effect. "
+                f"Because this probability is virtually zero (less than 1 in 1,000), it provides overwhelming empirical evidence "
+                f"that deliberate keyboard practice directly improved student typing proficiency."
+            )
+        elif p_val < 0.05:
+            p_meaning = (
+                f"The p-value of {p_str} indicates there is approximately a {p_val*100:.1f}% likelihood of observing an average gain of "
+                f"{abs_d:.2f} WPM by chance if practice had zero true effect. Because this falls below the 5% risk threshold, "
+                f"we conclude that deliberate practice had a genuine positive effect."
+            )
+        else:
+            p_meaning = (
+                f"The p-value of {p_str} indicates there is a {p_val*100:.1f}% likelihood that a difference of this size could arise "
+                f"purely from random sampling variability. Because this is higher than 5%, we cannot rule out random chance."
+            )
+    else:
+        p_meaning = "p-value is undefined when all paired differences are identical."
+
+    # 4. Null hypothesis evaluation
+    if sig:
+        h0_text = (
+            f"The empirical data supports REJECTING the null hypothesis (H0: mu_d = 0). "
+            f"We accept the alternative hypothesis (H1: mu_d != 0), confirming that the practice regimen produced "
+            f"a statistically verifiable effect on student keyboarding skills."
+        )
+    else:
+        h0_text = (
+            f"The data FAILS TO REJECT the null hypothesis (H0: mu_d = 0). "
+            f"We retain H0 as there is inadequate statistical evidence to demonstrate a non-zero effect at the 5% level."
+        )
+
+    # 5. 95% Confidence Interval interpretation
+    if ci_low is not None and ci_high is not None:
+        ci_text = (
+            f"The 95% confidence interval for the population mean improvement is [{ci_low:.2f}, {ci_high:.2f}] WPM. "
+            f"We are 95% confident that the true average improvement for the broader population of similar students "
+            f"lies within this range. Because the lower bound ({ci_low:.2f} WPM) is strictly greater than 0, "
+            f"it affirms that the true population impact is positive."
+        )
+    else:
+        ci_text = "Confidence interval not available."
+
+    return {
+        "change_text": change_text,
+        "sig_text": sig_text,
+        "p_meaning": p_meaning,
+        "h0_text": h0_text,
+        "ci_text": ci_text,
+        "sig": sig,
+    }
+
+
 def page_conclusion_export():
     """
     Conclusion & Export page: auto-generated plain-language summary + downloads.
 
     AUTO-GENERATED CONCLUSION
     -------------------------
-    The conclusion is built from the numerical results -- it is not a fixed
-    template. If the data changes, the conclusion automatically updates.
-
-    EXPORT OPTIONS
-    --------------
-    1. CSV -- the full dataset with individual differences appended.
-    2. Summary text -- a plain-language report suitable for a project submission.
+    The conclusion is dynamically generated using Python logic from the calculated
+    statistics -- it updates automatically whenever data changes without relying
+    on hardcoded templates or external LLM APIs.
     """
     st.markdown('<div class="section-header">📋 Conclusion & Export</div>', unsafe_allow_html=True)
     st.markdown(
@@ -1234,7 +1495,6 @@ def page_conclusion_export():
         st.info("Go to **Student Data** to add or fix your data.")
         return
 
-    # ── Auto-generated conclusion paragraph ───────────────────────────────────
     n          = results["n"]
     mean_b     = results["mean_before"]
     mean_a     = results["mean_after"]
@@ -1247,84 +1507,74 @@ def page_conclusion_export():
     p_val      = results["p_value"]
     sig        = results["significant"]
     alpha      = results["alpha"]
+    ci_low     = results.get("ci_95_lower")
+    ci_high    = results.get("ci_95_upper")
     data_label = "sample" if st.session_state.data_source == "demo" else "collected"
 
-    direction   = "increased" if mean_d > 0 else "decreased"
-    direction2  = "faster" if mean_d > 0 else "slower"
-    sig_word    = "statistically significant" if sig else "not statistically significant"
-    h0_decision = "rejected" if sig else "not rejected"
+    # Generate the dynamic interpretation
+    interp = generate_automatic_interpretation(results, st.session_state.data_source)
 
-    conclusion_text = (
-        f"A paired t-test was conducted on {data_label} typing speed data from {n} student(s) "
-        f"to evaluate whether a practice session produced a measurable change in WPM.\n\n"
-        f"The mean typing speed before practice was {mean_b:.2f} WPM "
-        f"(SD = {std_b:.2f}), and after practice it was {mean_a:.2f} WPM "
-        f"(SD = {std_a:.2f}). "
-        f"On average, students typed {abs(mean_d):.2f} WPM {direction2} after practice "
-        f"(mean difference d_bar = {mean_d:+.2f}, SD of differences = {std_d:.2f}).\n\n"
-    )
+    # ── Key numbers at a glance ────────────────────────────────────────────────
+    st.markdown("<h4 style='color:#17243A;margin-bottom:12px;'>⚡ Key Numbers at a Glance</h4>", unsafe_allow_html=True)
 
-    if t_val is not None:
-        conclusion_text += (
-            f"The paired t-test yielded t({df}) = {t_val:.4f}, p = {p_val:.4f}. "
-            f"At the significance level alpha = {alpha}, the result is {sig_word}, "
-            f"and the null hypothesis (H0: d_bar = 0) was {h0_decision}.\n\n"
-        )
-        if sig:
-            conclusion_text += (
-                f"Therefore, there is sufficient statistical evidence to conclude that "
-                f"the practice session {direction} typing speed. "
-                f"The improvement of {abs(mean_d):.2f} WPM is unlikely to be due to "
-                f"random variation alone."
-            )
-        else:
-            conclusion_text += (
-                f"Therefore, there is insufficient statistical evidence to conclude that "
-                f"practice changed typing speed at the chosen significance level. "
-                f"This may reflect a genuinely small effect, high variability, "
-                f"or an insufficient sample size (n = {n})."
-            )
-    else:
-        conclusion_text += (
-            "The t-test could not be computed because all students showed "
-            "exactly the same change, resulting in zero variance in the differences."
-        )
+    col_a, col_b, col_c, col_d = st.columns(4)
+    with col_a:
+        st.markdown(kpi_card("Mean Before", f"{mean_b:.1f}", " WPM", "blue"), unsafe_allow_html=True)
+    with col_b:
+        st.markdown(kpi_card("Mean After", f"{mean_a:.1f}", " WPM", "teal"), unsafe_allow_html=True)
+    with col_c:
+        sign = "+" if mean_d >= 0 else ""
+        st.markdown(kpi_card("Mean Difference", f"{sign}{mean_d:.1f}", " WPM", "teal"), unsafe_allow_html=True)
+    with col_d:
+        p_card_str = format_p_value(p_val)
+        st.markdown(kpi_card("p-Value", p_card_str, "", "navy"), unsafe_allow_html=True)
 
-    # Display in styled box
-    box_class = "conclusion-box reject" if sig else "conclusion-box"
-    conclusion_html = conclusion_text.replace("\n\n", "<br><br>")
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # ── Automatic Plain-English Interpretation Section ────────────────────────
+    st.markdown("<h3 style='color:#17243A;'>🤖 Automatic Result Interpretation</h3>", unsafe_allow_html=True)
     st.markdown(
-        f'<div class="{box_class}">{conclusion_html}</div>',
+        "<p style='color:#334155;'>Generated automatically from your verified dataset using inferential statistical logic:</p>",
         unsafe_allow_html=True,
     )
 
-    # ── Key numbers at a glance ────────────────────────────────────────────────
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("**Key Numbers at a Glance**")
+    border_accent = "#14B8A6" if sig else "#E11D48"
+    st.markdown(
+        f"""
+        <div class="interpretation-card" style="border-left-color: {border_accent};">
+            <h4>📈 1. Average Typing Speed Change</h4>
+            <p>{interp['change_text']}</p>
 
-    col_a, col_b, col_c, col_d = st.columns(4)
-    glance = [
-        (col_a, "Mean Before", f"{mean_b:.2f} WPM"),
-        (col_b, "Mean After",  f"{mean_a:.2f} WPM"),
-        (col_c, "Mean Diff",   f"{mean_d:+.2f} WPM"),
-        (col_d, "p-value",     f"{p_val:.4f}" if p_val is not None else "N/A"),
-    ]
-    for col, label, value in glance:
-        with col:
-            st.metric(label=label, value=value)
+            <h4 style="margin-top:18px;">⚖️ 2. Statistical Significance at &alpha; = {alpha}</h4>
+            <p>{interp['sig_text']}</p>
 
-    # ── Export: full data CSV ──────────────────────────────────────────────────
+            <h4 style="margin-top:18px;">🎲 3. What Does the p-Value Mean in Plain Terms?</h4>
+            <p>{interp['p_meaning']}</p>
+
+            <h4 style="margin-top:18px;">🛡️ 4. Null Hypothesis Decision</h4>
+            <p>{interp['h0_text']}</p>
+
+            <h4 style="margin-top:18px;">🎯 5. 95% Confidence Interval & Population Impact</h4>
+            <p>{interp['ci_text']}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # ── Export: full data CSV & Summary TXT ─────────────────────────────────────
     st.markdown("---")
-    st.markdown("### ⬇ Export Results")
+    st.markdown("<h3 style='color:#17243A;'>⬇ Export Results</h3>", unsafe_allow_html=True)
 
-    # Build the export DataFrame (adds "Change" and "Significant" columns)
+    # Build the export DataFrame
     export_df = records_to_df().copy()
-    export_df["Significant"] = sig
-    export_df["p-value"]     = f"{p_val:.4f}" if p_val else "N/A"
-    export_df["t-statistic"] = f"{t_val:.4f}" if t_val else "N/A"
-    export_df["df"]          = df
-    export_df["alpha"]       = alpha
-    export_df["Data Source"] = data_label
+    export_df["Significant"]  = sig
+    export_df["p-value"]      = format_p_value(p_val)
+    export_df["t-statistic"]  = f"{t_val:.4f}" if t_val is not None else "N/A"
+    export_df["df"]           = df
+    export_df["95% CI Lower"] = f"{ci_low:.4f}" if ci_low is not None else "N/A"
+    export_df["95% CI Upper"] = f"{ci_high:.4f}" if ci_high is not None else "N/A"
+    export_df["alpha"]        = alpha
+    export_df["Data Source"]  = data_label
 
     csv_bytes = export_df.to_csv(index=False).encode("utf-8")
 
@@ -1336,36 +1586,44 @@ def page_conclusion_export():
             data=csv_bytes,
             file_name="typing_speed_results.csv",
             mime="text/csv",
-            help="Downloads the student data with per-student differences and t-test summary.",
+            help="Downloads the student data with per-student differences, 95% CI, and t-test summary.",
         )
 
     with col_e2:
-        # Build a plain-text summary for the project report
+        # Build plain-text summary for academic submission
+        ci_summary_str = f"[{ci_low:.4f}, {ci_high:.4f}] WPM" if ci_low is not None else "N/A"
         summary_text = (
             "TYPING SPEED ANALYSIS -- MDM MINI PROJECT\n"
-            "=" * 50 + "\n"
+            "=" * 60 + "\n"
             f"Data source   : {data_label.title()}\n"
-            f"Students (n)  : {n}\n"
-            f"Alpha (alpha)     : {alpha}\n\n"
-            "DESCRIPTIVE STATISTICS\n"
-            "-" * 30 + "\n"
+            f"Students (n)  : {n} paired observations\n"
+            f"Significance  : alpha = {alpha}\n"
+            "=" * 60 + "\n\n"
+            "[1. DESCRIPTIVE STATISTICS]\n"
+            "-" * 35 + "\n"
             f"Mean Before   : {mean_b:.4f} WPM\n"
             f"Mean After    : {mean_a:.4f} WPM\n"
             f"SD Before     : {std_b:.4f}\n"
             f"SD After      : {std_a:.4f}\n\n"
-            "PAIRED DIFFERENCES (after - before)\n"
-            "-" * 30 + "\n"
+            "[2. PAIRED DIFFERENCES (after - before)]\n"
+            "-" * 35 + "\n"
             f"Mean diff (d_bar) : {mean_d:+.4f} WPM\n"
-            f"SD of diffs   : {std_d:.4f}\n\n"
-            "PAIRED t-TEST\n"
-            "-" * 30 + "\n"
-            f"t-statistic   : {t_val:.4f if t_val else 'N/A'}\n"
+            f"SD of diffs (s_d) : {std_d:.4f}\n"
+            f"Standard Error SE : {results.get('standard_error', 0.0):.4f} WPM\n"
+            f"95% CI on Diff    : {ci_summary_str}\n\n"
+            "[3. PAIRED t-TEST]\n"
+            "-" * 35 + "\n"
+            f"t-statistic   : {f'{t_val:.4f}' if t_val is not None else 'N/A'}\n"
             f"df            : {df}\n"
-            f"p-value       : {f'{p_val:.4f}' if p_val else 'N/A'}\n"
-            f"Significant   : {'Yes' if sig else 'No'}\n\n"
-            "CONCLUSION\n"
-            "-" * 30 + "\n"
-            + conclusion_text
+            f"p-value       : {format_p_value(p_val)}\n"
+            f"Significant   : {'Yes (Reject H0)' if sig else 'No (Fail to Reject H0)'}\n\n"
+            "[4. AUTOMATED PLAIN-ENGLISH INTERPRETATION]\n"
+            "-" * 35 + "\n"
+            f"* Speed Change: {interp['change_text']}\n\n"
+            f"* Significance: {interp['sig_text']}\n\n"
+            f"* p-Value Meaning: {interp['p_meaning']}\n\n"
+            f"* Hypothesis Test: {interp['h0_text']}\n\n"
+            f"* 95% Confidence Interval: {interp['ci_text']}\n"
         )
 
         st.download_button(
@@ -1373,7 +1631,7 @@ def page_conclusion_export():
             data=summary_text.encode("utf-8"),
             file_name="typing_speed_summary.txt",
             mime="text/plain",
-            help="Downloads a plain-text summary suitable for pasting into a project report.",
+            help="Downloads an academically formatted text summary ready for submission.",
         )
 
     # ── Data source note ───────────────────────────────────────────────────────
@@ -1460,8 +1718,8 @@ def main():
 
         if st.session_state.data_source == "demo":
             st.markdown(
-                '<div style="background:#78350F;border-radius:6px;padding:8px 10px;'
-                'font-size:0.75rem;color:#FDE68A;margin-top:8px;">'
+                '<div style="background:rgba(245,158,11,0.18);border:1px solid #F59E0B;border-radius:6px;padding:8px 10px;'
+                'font-size:0.75rem;color:#FDE68A;margin-top:8px;line-height:1.5;">'
                 "⚠ Using sample data.<br>Add your real data in<br><b>Student Data</b>."
                 "</div>",
                 unsafe_allow_html=True,
@@ -1470,7 +1728,7 @@ def main():
         st.divider()
 
         st.markdown(
-            '<div style="font-size:0.72rem;color:#64748B;line-height:1.6;">'
+            '<div style="font-size:0.75rem;color:#94A3B8;line-height:1.6;">'
             "📌 All charts and statistics<br>"
             "update automatically when<br>"
             "the dataset changes."
